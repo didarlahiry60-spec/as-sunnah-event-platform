@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { AsSunnahLogo } from "@/components/ui/Logo";
+import { messages } from "@/lib/messages";
 
-const links = [
-  ["/events", "ইভেন্ট"],
-  ["/notices", "নোটিশ"],
-  ["/about", "আমাদের সম্পর্কে"],
-  ["/blog", "ব্লগ"],
-  ["/gallery", "গ্যালারি"],
-  ["/contact", "যোগাযোগ"],
+const navLinks = [
+  ["/events", messages.nav.events],
+  ["/notices", messages.nav.notices],
+  ["/about", messages.nav.about],
+  ["/blog", messages.nav.blog],
+  ["/gallery", messages.nav.gallery],
+  ["/contact", messages.nav.contact],
 ] as const;
 
 export function Header() {
@@ -32,23 +33,30 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <Link href="/" aria-label="আস-সুন্নাহ ইভেন্ট হোমপেজ" className="flex items-center">
+        <Link href="/" aria-label={`${messages.brand.name} ${messages.nav.home}`} className="flex items-center">
           <AsSunnahLogo variant={solid || open ? "dark" : "light"} />
         </Link>
-        <nav className="hidden items-center gap-7 font-ui md:flex" aria-label="প্রধান মেনু">
-          {links.map(([href, label]) => (
-            <Link key={href} href={href} className="hover:text-accent-500 transition-colors">
+        <nav className="hidden items-center gap-7 font-ui md:flex" aria-label={messages.nav.mainNavLabel}>
+          {navLinks.map(([href, label]) => (
+            <Link
+              key={href}
+              href={href}
+              prefetch={false}
+              className={`transition-colors font-medium ${
+                solid ? "hover:text-brand-800 text-ink/90" : "hover:text-lime-300 text-ivory/95"
+              }`}
+            >
               {label}
             </Link>
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Button href="/portal" variant="accent" className="hidden min-h-10! sm:inline-flex">
-            লগইন
+          <Button href="/portal" variant="accent" prefetch={false} className="hidden sm:inline-flex">
+            {messages.nav.login}
           </Button>
           <button
-            className="grid size-12 place-items-center rounded-lg focus-visible:outline-2 focus-visible:outline-accent-500 md:hidden"
-            aria-label={open ? "মেনু বন্ধ করুন" : "মেনু খুলুন"}
+            className="grid size-12 place-items-center rounded-lg focus-visible:outline-2 focus-visible:outline-accent-500 md:hidden cursor-pointer"
+            aria-label={open ? messages.nav.closeMenu : messages.nav.openMenu}
             aria-expanded={open}
             onClick={() => setOpen(!open)}
           >
@@ -57,20 +65,26 @@ export function Header() {
         </div>
       </div>
       {open && (
-        <nav className="border-t border-accent-500/30 px-5 pb-5 font-ui md:hidden bg-ivory text-ink" aria-label="মোবাইল মেনু">
-          {links.map(([href, label]) => (
+        <nav
+          className="border-t border-accent-500/30 px-5 pb-6 font-ui md:hidden bg-ivory text-ink shadow-lg"
+          aria-label={messages.nav.mobileNavLabel}
+        >
+          {navLinks.map(([href, label]) => (
             <Link
               key={href}
               href={href}
+              prefetch={false}
               onClick={() => setOpen(false)}
-              className="block py-3 text-lg border-b border-sand/70 active:bg-sand/40"
+              className="flex min-h-12 items-center text-lg font-medium border-b border-sand/70 active:bg-sand/40 text-brand-950"
             >
               {label}
             </Link>
           ))}
-          <Button href="/portal" variant="primary" className="mt-4 w-full">
-            লগইন
-          </Button>
+          <div className="pt-4">
+            <Button href="/portal" variant="primary" prefetch={false} className="w-full">
+              {messages.nav.login}
+            </Button>
+          </div>
         </nav>
       )}
     </header>
