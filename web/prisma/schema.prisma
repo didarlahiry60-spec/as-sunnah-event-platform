@@ -1,0 +1,251 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PersonCategory {
+  IMAM
+  MADRASA_TEACHER
+  MADRASA_MANAGER
+  VOLUNTEER
+  OTHER
+}
+
+enum EventStatus {
+  DRAFT
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum ApplicationStatus {
+  PENDING
+  SHORTLISTED
+  SELECTED
+  REJECTED
+  WAITLIST
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  OFFICER
+  EDITOR
+  MONITOR
+}
+
+model Person {
+  id            String           @id @default(cuid())
+  mobile        String           @unique
+  name          String
+  email         String?
+  category      PersonCategory   @default(IMAM)
+  division      String?
+  district      String?
+  upazila       String?
+  unionName     String?
+  mosqueName    String?
+  mosqueLat     Float?
+  mosqueLng     Float?
+  internalStars Int? // ADMIN ONLY
+  totalPoints   Int              @default(0)
+  lastActiveAt  DateTime?
+  redFlag       Boolean          @default(false)
+  createdAt     DateTime         @default(now())
+  applications  Application[]
+  enrollments   Enrollment[]
+  submissions   Submission[]
+  attendances   Attendance[]
+  magicLinks    MagicLink[]
+  callLogs      CallLog[]
+  resourceViews ResourceView[]
+  reliefReplies ReliefResponse[]
+  messages      MessageLog[]
+}
+
+model Event {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  type          String
+  description   String
+  venue         String?
+  startsAt      DateTime
+  endsAt        DateTime
+  applyOpensAt  DateTime
+  applyClosesAt DateTime
+  seats         Int?
+  eligibility   Json?
+  formSchema    Json
+  status        EventStatus   @default(DRAFT)
+  bannerUrl     String?
+  applications  Application[]
+  enrollments   Enrollment[]
+}
+
+model Application {
+  id               String            @id @default(cuid())
+  number           String            @unique
+  eventId          String
+  personId         String
+  answers          Json
+  status           ApplicationStatus @default(PENDING)
+  autoScreenResult Json?
+  qrToken          String?           @unique
+  checkedInAt      DateTime?
+  createdAt        DateTime          @default(now())
+  event            Event             @relation(fields: [eventId], references: [id])
+  person           Person            @relation(fields: [personId], references: [id])
+
+  @@unique([eventId, personId])
+}
+
+model Enrollment {
+  id            String    @id @default(cuid())
+  personId      String
+  eventId       String
+  completedAt   DateTime?
+  certificateNo String?   @unique
+  person        Person    @relation(fields: [personId], references: [id])
+  event         Event     @relation(fields: [eventId], references: [id])
+
+  @@unique([personId, eventId])
+}
+
+model MagicLink {
+  id        String   @id @default(cuid())
+  shortCode String   @unique
+  tokenHash String
+  personId  String
+  purpose   String
+  payload   Json?
+  expiresAt DateTime
+  usedCount Int      @default(0)
+  person    Person   @relation(fields: [personId], references: [id])
+}
+
+model Resource {
+  id        String         @id @default(cuid())
+  title     String
+  kind      String
+  fileUrl   String
+  audience  Json
+  publishAt DateTime
+  views     ResourceView[]
+}
+
+model ResourceView {
+  id         String   @id @default(cuid())
+  resourceId String
+  personId   String
+  action     String
+  at         DateTime @default(now())
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  person     Person   @relation(fields: [personId], references: [id])
+}
+
+model OnlineClass {
+  id          String       @id @default(cuid())
+  title       String
+  startsAt    DateTime
+  meetingUrl  String
+  audience    Json
+  attendances Attendance[]
+}
+
+model Attendance {
+  id       String      @id @default(cuid())
+  classId  String
+  personId String
+  at       DateTime    @default(now())
+  class    OnlineClass @relation(fields: [classId], references: [id])
+  person   Person      @relation(fields: [personId], references: [id])
+
+  @@unique([classId, personId])
+}
+
+model ActivityType {
+  id     String @id @default(cuid())
+  code   String @unique
+  nameBn String
+  points Int
+}
+
+model Submission {
+  id            String   @id @default(cuid())
+  personId      String
+  activityCode  String
+  note          String?
+  photoUrls     String[]
+  photoHash     String?
+  pointsAwarded Int
+  status        String   @default("APPROVED")
+  month         String
+  createdAt     DateTime @default(now())
+  person        Person   @relation(fields: [personId], references: [id])
+
+  @@index([month, personId])
+}
+
+model ReliefResponse {
+  id       String   @id @default(cuid())
+  personId String
+  campaign String
+  willJoin Boolean
+  at       DateTime @default(now())
+  person   Person   @relation(fields: [personId], references: [id])
+}
+
+model CallLog {
+  id        String   @id @default(cuid())
+  personId  String
+  byAdminId String
+  result    String
+  note      String?
+  at        DateTime @default(now())
+  person    Person   @relation(fields: [personId], references: [id])
+}
+
+model MessageLog {
+  id        String   @id @default(cuid())
+  personId  String?
+  channel   String
+  body      String
+  status    String
+  error     String?
+  createdAt DateTime @default(now())
+  person    Person?  @relation(fields: [personId], references: [id])
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  role         AdminRole
+  passwordHash String
+}
+
+model Setting {
+  key   String @id
+  value Json
+}
+
+model AuditLog {
+  id      String   @id @default(cuid())
+  adminId String
+  action  String
+  target  String
+  at      DateTime @default(now())
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  kind        String
+  title       String
+  body        String
+  publishedAt DateTime?
+}

@@ -1,0 +1,15 @@
+{
+  "name": "assunnah-event-management",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "start": "pnpm --filter web start",
+    "lint": "pnpm --filter web lint",
+    "test": "pnpm --filter web test",
+    "typecheck": "pnpm --filter web exec tsc --noEmit",
+    "db:generate": "pnpm --filter web exec prisma generate",
+    "db:seed": "pnpm --filter web run db:seed"
+  }
+}
