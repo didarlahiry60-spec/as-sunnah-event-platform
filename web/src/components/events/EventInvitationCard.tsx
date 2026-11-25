@@ -14,7 +14,6 @@ import {
   QrCode,
   ShieldCheck,
   Send,
-  Sparkles,
 } from "lucide-react";
 import { EventItem } from "@/lib/sample-data";
 import { formatBengaliDate, toBengaliDigits } from "@/lib/format";
@@ -38,28 +37,28 @@ export function EventInvitationCard({
   const endDateBn = formatBengaliDate(event.endsAt);
   const seatsBn = toBengaliDigits(event.seats);
 
-  // Formatted Rich Text Caption for WhatsApp & Social Media
-  const captionText = `🕌 بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+  // Formatted Rich Text Caption for WhatsApp & Social Media (clean text, no emojis)
+  const captionText = `بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
 
-📢 আস-সুন্নাহ ফাউন্ডেশন • অফিসিয়াল ইভেন্ট ও প্রশিক্ষণ বিজ্ঞপ্তি
+আস-সুন্নাহ ফাউন্ডেশন • অফিসিয়াল ইভেন্ট ও প্রশিক্ষণ বিজ্ঞপ্তি
 ━━━━━━━━━━━━━━━━━━━━
-📌 কোর্সের নাম: ${event.title}
+কোর্সের নাম: ${event.title}
 
-🗓️ তারিখ: ${startDateBn} — ${endDateBn}
-📍 স্থান: ${event.venue || messages.brand.auditorium}
-👥 সর্বমোট আসন: ${seatsBn} জন (১০০% সম্পূর্ণ ফ্রি স্কলারশিপ)
-🎁 সুযোগ-সুবিধা: বিনামূল্যে প্রশিক্ষণ, পাঠ্যসামগ্রী, খাবার, আবাসন ও ডিজিটাল সনদ
+তারিখ: ${startDateBn} — ${endDateBn}
+স্থান: ${event.venue || messages.brand.auditorium}
+সর্বমোট আসন: ${seatsBn} জন (১০০% সম্পূর্ণ ফ্রি স্কলারশিপ)
+সুযোগ-সুবিধা: বিনামূল্যে প্রশিক্ষণ, পাঠ্যসামগ্রী, খাবার, আবাসন ও ডিজিটাল সনদ
 
-🎯 অংশগ্রহণের যোগ্যতা ও বিবরণ:
+অংশগ্রহণের যোগ্যতা ও বিবরণ:
 ${event.eligibility.slice(0, 2).map(e => `• ${e}`).join("\n")}
 
-🔗 অনলাইনে সরাসরি আবেদনের লিংক:
-👉 ${applyUrl}
+অনলাইনে সরাসরি আবেদনের লিংক:
+${applyUrl}
 
-📞 জরুরি হেল্পলাইন ও তথ্য: ০৯৬১০-০০১০৮৯
+জরুরি হেল্পলাইন ও তথ্য: ০৯৬১০-০০১০৮৯
 ━━━━━━━━━━━━━━━━━━━━
-📢 নতুন সকল আয়োজন ও সার্কুলার সবার আগে পেতে আস-সুন্নাহ ফাউন্ডেশন অফিশিয়াল হোয়াটসঅ্যাপ চ্যানেল ফলো করুন:
-👉 ${channelUrl}`;
+নতুন সকল আয়োজন ও সার্কুলার সবার আগে পেতে আস-সুন্নাহ ফাউন্ডেশন অফিশিয়াল হোয়াটসঅ্যাপ চ্যানেল ফলো করুন:
+${channelUrl}`;
 
   const handleCopyCaption = async () => {
     try {
@@ -91,9 +90,6 @@ ${event.eligibility.slice(0, 2).map(e => `• ${e}`).join("\n")}
       {/* Top Controls Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-3xl border border-sand/90 bg-white p-5 shadow-soft print:hidden">
         <div className="flex items-center gap-3">
-          <div className="grid size-12 place-items-center rounded-2xl bg-brand-900 text-lime-400">
-            <Sparkles className="size-6" />
-          </div>
           <div>
             <h3 className="font-display text-xl sm:text-2xl font-bold text-ink">
               ডিজিটাল ইনভিটেশন কার্ড ও হোয়াটসঅ্যাপ ক্যাপশন

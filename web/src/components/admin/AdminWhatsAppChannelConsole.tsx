@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import {
-  Sparkles,
   Link2,
   CheckCircle2,
   ExternalLink,
@@ -152,7 +151,7 @@ export function AdminWhatsAppChannelConsole() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-sand">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3.5 py-1 text-xs font-bold text-brand-900 font-ui mb-2">
-              <Sparkles className="size-4" />
+              <span className="size-2 rounded-full bg-brand-600" aria-hidden="true" />
               <span>লাইভ ইভেন্ট ইনভিটেশন ব্রডকাস্টার</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink">
