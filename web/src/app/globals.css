@@ -1,0 +1,106 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/as-sunnah-typography.css";
+
+@theme inline {
+  --color-brand-950: var(--brand-950);
+  --color-brand-900: var(--brand-900);
+  --color-brand-800: var(--brand-800);
+  --color-brand-600: var(--brand-600);
+  --color-brand-500: var(--brand-500);
+  --color-lime-500: var(--lime-500);
+  --color-lime-300: var(--lime-300);
+  --color-lime-100: var(--lime-100);
+  --color-accent-700: var(--accent-700);
+  --color-accent-500: var(--accent-500);
+  --color-accent-300: var(--accent-300);
+  --color-accent-100: var(--accent-100);
+  --color-ivory: var(--off-white, #F2F4EC);
+  --color-sand: var(--sand);
+  --color-canvas: var(--off-white, #F2F4EC);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-info: var(--info);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  /* As-Sunnah Foundation Dual Fallback Architecture:
+     Latin & Numbers -> UbuntuSans
+     Bengali Glyph Range -> Bornomala
+  */
+  --font-sans: "UbuntuSans", "Bornomala", var(--f-body), "Hind Siliguri", "Noto Sans Bengali", system-ui, -apple-system, sans-serif;
+  --font-display: "UbuntuSans", "Bornomala", var(--f-display), "Anek Bangla", serif;
+  --font-ui: "PublicSans", "Bornomala", var(--f-ui), "Anek Bangla", sans-serif;
+  --font-bornomala: "Bornomala", sans-serif;
+  --font-ubuntu: "UbuntuSans", sans-serif;
+  --font-public: "PublicSans", sans-serif;
+  --font-serif: "Bornomala", "Tiro Bangla", var(--f-serif), "Noto Serif Bengali", serif;
+  --font-noto: "Bornomala", var(--f-noto), "Noto Sans Bengali", sans-serif;
+  --font-tiro: "Tiro Bangla", "Bornomala", serif;
+  --font-arabic: var(--f-arabic), "Amiri", "Scheherazade New", "Traditional Arabic", serif;
+  --shadow-soft: var(--shadow);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--off-white, #F2F4EC);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  overflow-wrap: break-word;
+  font-size-adjust: from-font;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.25;
+  text-wrap: balance;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+}
+
+p, li, blockquote {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent-500);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@supports not (font-size-adjust: from-font) {
+  body {
+    line-height: 1.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Luminous Gold & Lime Accents */
+.accent-foil {
+  background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 50%, #D97706 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.accent-foil-bg {
+  background: var(--accent-foil);
+}
