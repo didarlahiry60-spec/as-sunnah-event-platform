@@ -73,13 +73,20 @@ export function Header() {
   }
 
   return (
-    <header className="fixed top-3 sm:top-4 inset-x-0 z-50 px-3 sm:px-6 pointer-events-none">
-      {/* Floating Navbar Pill Container */}
+    <header
+      className={`fixed inset-x-0 z-50 pointer-events-none transition-all duration-300 ease-out ${
+        scrolled ? "top-3 sm:top-4 px-3 sm:px-6" : "top-0 px-0"
+      }`}
+    >
+      {/* Top-docked Bar at y=0 -> Floating Pill on Scroll */}
       <div
-        className={`mx-auto max-w-7xl rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-md border border-sand/80 px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between transition-all duration-300 pointer-events-auto ${
-          scrolled ? "shadow-lg shadow-brand-950/8 border-sand" : "shadow-md shadow-brand-950/4"
+        className={`mx-auto w-full bg-white/95 backdrop-blur-md transition-all duration-300 ease-out pointer-events-auto ${
+          scrolled
+            ? "max-w-7xl rounded-2xl sm:rounded-full border border-sand px-4 sm:px-6 py-2.5 sm:py-3 shadow-lg shadow-brand-950/10"
+            : "max-w-full rounded-none border-b border-sand/80 px-4 sm:px-6 py-3 shadow-xs"
         }`}
       >
+        <div className="mx-auto w-full max-w-7xl flex items-center justify-between">
         {/* 1. Left: Official As-Sunnah Logo */}
         <Link
           href="/"
@@ -180,11 +187,12 @@ export function Header() {
             {open ? <X className="size-6 text-brand-900" /> : <Menu className="size-6 text-brand-900" />}
           </button>
         </div>
+        </div>
       </div>
 
       {/* Mobile Floating Dropdown Card */}
       {open && (
-        <div className="lg:hidden mt-2 mx-auto max-w-7xl pointer-events-auto">
+        <div className={`lg:hidden mt-2 mx-auto max-w-7xl pointer-events-auto ${scrolled ? "" : "px-3 sm:px-6"}`}>
           <div className="rounded-2xl bg-white border border-sand/90 shadow-2xl p-5 space-y-3 animate-in fade-in slide-in-from-top-3 duration-200">
             <nav className="space-y-1" aria-label="মোবাইল নেভিগেশন">
               {navLinks.map((item) => {
