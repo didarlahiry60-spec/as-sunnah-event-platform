@@ -18,6 +18,7 @@ import { getLivePhotoWall, getExecutiveReportSummary } from "@/lib/reporting";
 import { getTraineeFullProfile, sanitizeTraineeProfile } from "@/lib/trainee";
 import { getSubmissionsByPerson } from "@/lib/submissions";
 import { messages } from "@/lib/messages";
+import { createAdminSessionToken } from "@/lib/auth";
 
 import { GET as getAdminTraineesRoute } from "@/app/api/admin/trainees/route";
 import { PATCH as updateRatingRoute } from "@/app/api/admin/trainees/[id]/rating/route";
@@ -433,8 +434,20 @@ describe("Sprint 7: Strict Security Invariant & Public Data Isolation", () => {
 // 7. API Endpoints Integration
 // =========================================================================
 describe("Sprint 7: Admin API Endpoints Integration", () => {
+  const getAdminHeaders = async (extra: Record<string, string> = {}) => {
+    const token = await createAdminSessionToken({
+      adminId: "admin-test-1",
+      email: "admin@assunnah.local",
+      name: "Test Admin",
+      role: "SUPER_ADMIN",
+    });
+    return { Authorization: `Bearer ${token}`, ...extra };
+  };
+
   test("API: GET /api/admin/trainees returns directory with secret ratings", async () => {
-    const req = new NextRequest("http://localhost:3000/api/admin/trainees");
+    const req = new NextRequest("http://localhost:3000/api/admin/trainees", {
+      headers: await getAdminHeaders(),
+    });
     const res = await getAdminTraineesRoute(req);
     assert.equal(res.status, 200);
 
@@ -447,7 +460,7 @@ describe("Sprint 7: Admin API Endpoints Integration", () => {
   test("API: PATCH /api/admin/trainees/[id]/rating updates rating and handles invalid values", async () => {
     const reqValid = new NextRequest("http://localhost:3000/api/admin/trainees/person-mock-1/rating", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: await getAdminHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ rating: 5 }),
     });
 
@@ -462,7 +475,7 @@ describe("Sprint 7: Admin API Endpoints Integration", () => {
     // Invalid rating (7)
     const reqInvalid = new NextRequest("http://localhost:3000/api/admin/trainees/person-mock-1/rating", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: await getAdminHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ rating: 7 }),
     });
     const resInvalid = await updateRatingRoute(reqInvalid, {
@@ -474,7 +487,7 @@ describe("Sprint 7: Admin API Endpoints Integration", () => {
   test("API: POST /api/admin/trainees/[id]/call-log saves log and clears redFlag", async () => {
     const req = new NextRequest("http://localhost:3000/api/admin/trainees/person-mock-1/call-log", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: await getAdminHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({
         callerName: "এডমিন অফিসার",
         notes: "টেস্ট ফলো-আপ সফলভাবে সম্পন্ন",
@@ -493,7 +506,9 @@ describe("Sprint 7: Admin API Endpoints Integration", () => {
   });
 
   test("API: GET /api/admin/relief returns list of broadcasts", async () => {
-    const req = new NextRequest("http://localhost:3000/api/admin/relief");
+    const req = new NextRequest("http://localhost:3000/api/admin/relief", {
+      headers: await getAdminHeaders(),
+    });
     const res = await getReliefRoute(req);
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -504,7 +519,7 @@ describe("Sprint 7: Admin API Endpoints Integration", () => {
   test("API: POST /api/admin/relief/broadcast starts new broadcast", async () => {
     const req = new NextRequest("http://localhost:3000/api/admin/relief/broadcast", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: await getAdminHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({
         title: "নোয়াখালী জরুরি সাড়াদান ক্যাম্পেইন",
         district: "নোয়াখালী",
@@ -522,7 +537,7 @@ describe("Sprint 7: Admin API Endpoints Integration", () => {
   test("API: POST /api/admin/relief/respond records trainee response", async () => {
     const req = new NextRequest("http://localhost:3000/api/admin/relief/respond", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: await getAdminHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({
         broadcastId: "RELIEF-2026-001",
         traineePhone: "01855667788",
@@ -539,7 +554,10 @@ describe("Sprint 7: Admin API Endpoints Integration", () => {
   });
 
   test("API: GET /api/admin/reports/summary returns executive stats and breakdown", async () => {
-    const res = await getReportSummaryRoute();
+    const req = new NextRequest("http://localhost:3000/api/admin/reports/summary", {
+      headers: await getAdminHeaders(),
+    });
+    const res = await getReportSummaryRoute(req);
     assert.equal(res.status, 200);
     const body = await res.json();
     assert.equal(body.success, true);

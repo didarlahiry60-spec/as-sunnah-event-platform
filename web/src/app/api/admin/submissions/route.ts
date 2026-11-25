@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { getAllSubmissions } from "@/lib/submissions";
 
@@ -8,6 +9,9 @@ export const dynamic = "force-dynamic";
  * Lists all nationwide submissions with optional filters
  */
 export async function GET(request: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get("type") || undefined;

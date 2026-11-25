@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { requireAdminApi } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server";
 import {
   getAllJobs,
   getRecentExecutionLogs,
@@ -15,7 +16,10 @@ export const dynamic = "force-dynamic";
  * recent execution logs, current Hijri date calculation, and active settings.
  * ADMIN ONLY — STRICT SECURITY INVARIANT
  */
-export async function GET() {
+export async function GET(request?: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const now = new Date();
     const settings = await getAutomationSettings();

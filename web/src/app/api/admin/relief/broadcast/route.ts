@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { createReliefBroadcast, getReliefBroadcastSummary, DisasterType } from "@/lib/relief";
 
@@ -8,6 +9,9 @@ export const dynamic = "force-dynamic";
  * Initiates an urgent emergency relief SMS broadcast to a target district.
  */
 export async function POST(request: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json();
     const { title, district, disasterType, message } = body;

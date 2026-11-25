@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { recordTraineeCallLog } from "@/lib/trainee-admin";
 
@@ -7,10 +8,11 @@ export const dynamic = "force-dynamic";
  * POST /api/admin/trainees/[id]/call-log
  * Records an administrative call log entry and optionally resolves redFlag.
  */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const { id } = await params;
     const body = await request.json();

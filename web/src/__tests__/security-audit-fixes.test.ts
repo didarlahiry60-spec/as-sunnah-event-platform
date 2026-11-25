@@ -382,10 +382,20 @@ describe("Security Hardening & Privacy Audit Fixes", () => {
   // 6. Sanitize API Error Responses
   // =========================================================================
   describe("6. Sanitize API Error Responses", () => {
+    const getAdminHeaders = async (extra: Record<string, string> = {}) => {
+      const token = await createAdminSessionToken({
+        adminId: "admin-test-1",
+        email: "admin@assunnah.local",
+        name: "Test Admin",
+        role: "SUPER_ADMIN",
+      });
+      return { Authorization: `Bearer ${token}`, ...extra };
+    };
+
     test("PATCH /api/admin/submissions/[id]/status returns safe Bengali error message for unknown ID", async () => {
       const req = new NextRequest("http://localhost:3000/api/admin/submissions/nonexistent-id/status", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: await getAdminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ status: "APPROVED" }),
       });
       const res = await submissionStatusRoute(req, {
@@ -402,7 +412,7 @@ describe("Security Hardening & Privacy Audit Fixes", () => {
       // Cause an exception by passing unexpected prototype or trigger error
       const req = new NextRequest("http://localhost:3000/api/admin/automation/settings", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: await getAdminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ hijriOffset: 99 }), // Invalid offset returns 400
       });
       const res = await automationSettingsRoute(req);
@@ -414,7 +424,7 @@ describe("Security Hardening & Privacy Audit Fixes", () => {
     test("POST /api/admin/trainees/[id]/rating handles unknown trainee without leaking stack traces", async () => {
       const req = new NextRequest("http://localhost:3000/api/admin/trainees/unknown-id/rating", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: await getAdminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ rating: 4 }),
       });
       const res = await traineeRatingRoute(req, {
@@ -429,7 +439,7 @@ describe("Security Hardening & Privacy Audit Fixes", () => {
     test("POST /api/admin/trainees/[id]/call-log handles unknown trainee without leaking stack traces", async () => {
       const req = new NextRequest("http://localhost:3000/api/admin/trainees/unknown-id/call-log", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: await getAdminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ notes: "Follow-up note" }),
       });
       const res = await traineeCallLogRoute(req, {
@@ -443,7 +453,7 @@ describe("Security Hardening & Privacy Audit Fixes", () => {
     test("POST /api/admin/automation/trigger handles invalid job key without leaking stack traces", async () => {
       const req = new NextRequest("http://localhost:3000/api/admin/automation/trigger", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: await getAdminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ jobKey: "INVALID_KEY" }),
       });
       const res = await automationTriggerRoute(req);
@@ -453,7 +463,9 @@ describe("Security Hardening & Privacy Audit Fixes", () => {
     });
 
     test("GET /api/admin/relief handles broadcast summary query gracefully", async () => {
-      const req = new NextRequest("http://localhost:3000/api/admin/relief?broadcastId=nonexistent-broadcast");
+      const req = new NextRequest("http://localhost:3000/api/admin/relief?broadcastId=nonexistent-broadcast", {
+        headers: await getAdminHeaders(),
+      });
       const res = await reliefRoute(req);
       // Returns 404 or safe summary
       assert.ok([200, 404].includes(res.status));
@@ -466,7 +478,7 @@ describe("Security Hardening & Privacy Audit Fixes", () => {
     test("POST /api/admin/relief/respond handles unknown broadcast without leaking stack traces", async () => {
       const req = new NextRequest("http://localhost:3000/api/admin/relief/respond", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: await getAdminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           broadcastId: "unknown-broadcast",
           traineePhone: "01711223344",

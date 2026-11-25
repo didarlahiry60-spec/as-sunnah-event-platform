@@ -149,8 +149,8 @@ function isUserWorkerFirst(runWorkerFirst, pathname) {
 var asset_resolver_default = resolver;
 
 // ../node_modules/.pnpm/@opennextjs+cloudflare@1.20.18_next@16.4.6_@babel+core@7.29.13_supports-color@7.2.0__@t_674f5d5cfd0ad64c22834b0de6fbcc65/node_modules/@opennextjs/cloudflare/dist/api/config.js
-function defineCloudflareConfig(config = {}) {
-  const { incrementalCache, tagCache, queue, cachePurge, enableCacheInterception = false, routePreloadingBehavior = "none" } = config;
+function defineCloudflareConfig(config2 = {}) {
+  const { incrementalCache, tagCache, queue, cachePurge, enableCacheInterception = false, routePreloadingBehavior = "none" } = config2;
   return {
     default: {
       override: {
@@ -212,11 +212,9 @@ function resolveCdnInvalidation(value = "dummy") {
 }
 
 // open-next.config.ts
-var open_next_config_default = defineCloudflareConfig({
-  // For best results consider enabling R2 caching
-  // See https://opennext.js.org/cloudflare/caching for more details
-  // incrementalCache: r2IncrementalCache
-});
+var config = defineCloudflareConfig();
+config.buildCommand = "echo 'Skipping build in OpenNext'";
+var open_next_config_default = config;
 export {
   open_next_config_default as default
 };

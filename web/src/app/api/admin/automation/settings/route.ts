@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { updateAutomationSettings, getAutomationSettings } from "@/lib/automation";
 import { getHijriDate } from "@/lib/hijri";
@@ -10,6 +11,9 @@ export const dynamic = "force-dynamic";
  * Updates dynamic automation settings like Hijri offset (-1, 0, +1)
  */
 export async function POST(request: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json().catch(() => ({}));
 

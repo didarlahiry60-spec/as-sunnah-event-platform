@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { updateTraineeInternalRating } from "@/lib/trainee-admin";
 
@@ -43,16 +44,18 @@ async function handleRatingUpdate(
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   return handleRatingUpdate(request, params);
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   return handleRatingUpdate(request, params);
 }

@@ -25,6 +25,7 @@ import { isTraineeInactive, INACTIVITY_RED_FLAG_DAYS } from "@/lib/scoring";
 import { getHijriDate } from "@/lib/hijri";
 import { getTraineeFullProfile, sanitizeTraineeProfile } from "@/lib/trainee";
 import { messages } from "@/lib/messages";
+import { createAdminSessionToken } from "@/lib/auth";
 import { GET as getAdminAutomation } from "@/app/api/admin/automation/route";
 import { POST as triggerAdminAutomation } from "@/app/api/admin/automation/trigger/route";
 import { POST as updateAdminSettings } from "@/app/api/admin/automation/settings/route";
@@ -338,7 +339,16 @@ describe("Sprint 6: Manual Trigger Engine & Admin Automation APIs", () => {
   });
 
   test("API Route: GET /api/admin/automation returns complete dashboard state", async () => {
-    const response = await getAdminAutomation();
+    const token = await createAdminSessionToken({
+      adminId: "admin-test-1",
+      email: "admin@assunnah.local",
+      name: "Test Admin",
+      role: "SUPER_ADMIN",
+    });
+    const req = new NextRequest("http://localhost:3000/api/admin/automation", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const response = await getAdminAutomation(req);
     assert.equal(response.status, 200);
 
     const body = await response.json();
@@ -352,8 +362,15 @@ describe("Sprint 6: Manual Trigger Engine & Admin Automation APIs", () => {
   });
 
   test("API Route: POST /api/admin/automation/trigger runs job on demand", async () => {
+    const token = await createAdminSessionToken({
+      adminId: "admin-test-1",
+      email: "admin@assunnah.local",
+      name: "Test Admin",
+      role: "SUPER_ADMIN",
+    });
     const req = new NextRequest("http://localhost:3000/api/admin/automation/trigger", {
       method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
       body: JSON.stringify({ jobKey: "AMAL_REMINDER" }),
     });
 
@@ -367,8 +384,15 @@ describe("Sprint 6: Manual Trigger Engine & Admin Automation APIs", () => {
   });
 
   test("API Route: POST /api/admin/automation/trigger rejects invalid body", async () => {
+    const token = await createAdminSessionToken({
+      adminId: "admin-test-1",
+      email: "admin@assunnah.local",
+      name: "Test Admin",
+      role: "SUPER_ADMIN",
+    });
     const req = new NextRequest("http://localhost:3000/api/admin/automation/trigger", {
       method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
       body: JSON.stringify({ jobKey: "INVALID_KEY" }),
     });
 
@@ -380,8 +404,15 @@ describe("Sprint 6: Manual Trigger Engine & Admin Automation APIs", () => {
   });
 
   test("API Route: POST /api/admin/automation/settings updates Hijri offset", async () => {
+    const token = await createAdminSessionToken({
+      adminId: "admin-test-1",
+      email: "admin@assunnah.local",
+      name: "Test Admin",
+      role: "SUPER_ADMIN",
+    });
     const req = new NextRequest("http://localhost:3000/api/admin/automation/settings", {
       method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
       body: JSON.stringify({ hijriOffset: 1 }),
     });
 
@@ -395,8 +426,15 @@ describe("Sprint 6: Manual Trigger Engine & Admin Automation APIs", () => {
   });
 
   test("API Route: POST /api/admin/automation/call logs follow-up call", async () => {
+    const token = await createAdminSessionToken({
+      adminId: "admin-test-1",
+      email: "admin@assunnah.local",
+      name: "Test Admin",
+      role: "SUPER_ADMIN",
+    });
     const req = new NextRequest("http://localhost:3000/api/admin/automation/call", {
       method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
       body: JSON.stringify({
         personId: "person-mock-4",
         note: "ফলো-আপ সম্পন্ন",
@@ -562,8 +600,15 @@ describe("Sprint 6: Concurrency, Exact Boundaries & Engine Robustness", () => {
   });
 
   test("API Route: POST /api/admin/automation/settings returns current settings on empty body", async () => {
+    const token = await createAdminSessionToken({
+      adminId: "admin-test-1",
+      email: "admin@assunnah.local",
+      name: "Test Admin",
+      role: "SUPER_ADMIN",
+    });
     const req = new NextRequest("http://localhost:3000/api/admin/automation/settings", {
       method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
       body: JSON.stringify({}),
     });
 

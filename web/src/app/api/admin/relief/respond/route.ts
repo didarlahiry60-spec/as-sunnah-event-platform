@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { recordReliefResponse } from "@/lib/relief";
 
@@ -8,6 +9,9 @@ export const dynamic = "force-dynamic";
  * Records or simulates trainee response ("1" / "2" / "READY" / "UNAVAILABLE") to a relief broadcast.
  */
 export async function POST(request: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json();
     const broadcastId = body.broadcastId;

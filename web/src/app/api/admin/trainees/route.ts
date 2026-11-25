@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminTraineesList } from "@/lib/trainee-admin";
 
@@ -9,6 +10,9 @@ export const dynamic = "force-dynamic";
  * STRICT SECURITY INVARIANT: Accessible ONLY from authenticated admin sessions.
  */
 export async function GET(request: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(request.url);
     const district = searchParams.get("district") || undefined;

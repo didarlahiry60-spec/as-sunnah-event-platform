@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { markAdminCallCompleted } from "@/lib/automation";
 
@@ -9,6 +10,9 @@ export const dynamic = "force-dynamic";
  * Marks administrative follow-up call as completed for a trainee
  */
 export async function POST(request: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json().catch(() => null);
 

@@ -65,16 +65,18 @@ export function seedAdminUser(
   return user;
 }
 
-// Pre-seed official admin user accounts
-seedAdminUser("admin@assunnahfoundation.org", "1234", "সুপার অ্যাডমিন", AdminRole.SUPER_ADMIN, "admin-root");
-seedAdminUser("admin@assunnah.local", "1234", "সুপার অ্যাডমিন", AdminRole.SUPER_ADMIN, "admin-mock-root");
-seedAdminUser("admin", "1234", "সুপার অ্যাডমিন", AdminRole.SUPER_ADMIN, "admin-direct");
+// Pre-seed official demo admin accounts ONLY in non-production environments
+if (process.env.NODE_ENV !== "production") {
+  seedAdminUser("admin@assunnahfoundation.org", "1234", "সুপার অ্যাডমিন", AdminRole.SUPER_ADMIN, "admin-root");
+  seedAdminUser("admin@assunnah.local", "1234", "সুপার অ্যাডমিন", AdminRole.SUPER_ADMIN, "admin-mock-root");
+  seedAdminUser("admin", "1234", "সুপার অ্যাডমিন", AdminRole.SUPER_ADMIN, "admin-direct");
+}
 
 if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
   seedAdminUser(
     process.env.ADMIN_EMAIL,
     process.env.ADMIN_PASSWORD,
-    "System Admin",
+    "সুপার অ্যাডমিন",
     AdminRole.SUPER_ADMIN,
     "admin-env-root"
   );
@@ -143,7 +145,7 @@ export async function authenticateAdmin(
   }
 
   let user = await findAdminByEmail(cleanEmail);
-  if (!user && (cleanEmail === "admin@assunnahfoundation.org" || cleanEmail === "admin@assunnah.local")) {
+  if (!user && process.env.NODE_ENV !== "production" && (cleanEmail === "admin@assunnahfoundation.org" || cleanEmail === "admin@assunnah.local")) {
     user = seedAdminUser(cleanEmail, "1234", "সুপার অ্যাডমিন", AdminRole.SUPER_ADMIN, "admin-root");
   }
 
@@ -151,8 +153,8 @@ export async function authenticateAdmin(
     return { success: false, error: "ভুল ইমেইল বা পাসওয়ার্ড" };
   }
 
-  // Accept user-defined password 1234, legacy test password ChangeMe123!, or salted hash
-  const isValid = password === "1234" || password === "ChangeMe123!" || verifyPassword(password, user.passwordHash);
+  // Strictly verify against salted scrypt password hash (no hardcoded bypasses)
+  const isValid = verifyPassword(password, user.passwordHash);
   if (!isValid) {
     return { success: false, error: "ভুল ইমেইল বা পাসওয়ার্ড" };
   }

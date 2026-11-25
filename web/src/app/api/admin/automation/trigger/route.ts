@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { triggerJob, AUTOMATION_JOB_KEYS, JobKey } from "@/lib/automation";
 
@@ -9,6 +10,9 @@ export const dynamic = "force-dynamic";
  * Manually triggers an automation job immediately and returns execution summary.
  */
 export async function POST(request: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json().catch(() => null);
 

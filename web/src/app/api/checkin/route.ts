@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkInApplicant, getApplicationByQrToken } from "@/lib/applications";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+import { requireAdminApi } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,9 @@ export async function POST(request: NextRequest) {
     if (!limiter.allowed) {
       return rateLimitResponse(limiter.retryAfterSeconds, "চেক-ইন অনুরোধের সীমা অতিক্রম করেছে। কিছুক্ষণ পর আবার চেষ্টা করুন।");
     }
+
+    const authError = await requireAdminApi(request);
+    if (authError) return authError;
 
     const body = await request.json();
     const { token } = body;
@@ -38,6 +42,9 @@ export async function GET(request: NextRequest) {
     if (!limiter.allowed) {
       return rateLimitResponse(limiter.retryAfterSeconds, "চেক-ইন যাচাই অনুরোধের সীমা অতিক্রম করেছে। কিছুক্ষণ পর আবার চেষ্টা করুন।");
     }
+
+    const authError = await requireAdminApi(request);
+    if (authError) return authError;
 
     const { searchParams } = new URL(request.url);
     const token = searchParams.get("token");

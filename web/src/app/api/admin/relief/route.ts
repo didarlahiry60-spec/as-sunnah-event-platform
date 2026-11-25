@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { getAllReliefBroadcasts, getReliefBroadcastSummary } from "@/lib/relief";
 
@@ -8,6 +9,9 @@ export const dynamic = "force-dynamic";
  * Lists all emergency relief broadcasts with live tallies, or returns a single summary.
  */
 export async function GET(request: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(request.url);
     const broadcastId = searchParams.get("broadcastId");

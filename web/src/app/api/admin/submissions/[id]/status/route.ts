@@ -1,3 +1,4 @@
+import { requireAdminApi } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { updateSubmissionStatus, SubmissionStatus } from "@/lib/submissions";
 
@@ -39,16 +40,18 @@ async function handleStatusUpdate(
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   return handleStatusUpdate(request, params);
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   return handleStatusUpdate(request, params);
 }

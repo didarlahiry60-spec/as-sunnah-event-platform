@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { requireAdminApi } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server";
 import { getExecutiveReportSummary } from "@/lib/reporting";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +8,10 @@ export const dynamic = "force-dynamic";
  * GET /api/admin/reports/summary
  * Aggregates nationwide reporting data for 1-click executive reporting & print.
  */
-export async function GET() {
+export async function GET(request?: NextRequest) {
+  const authError = await requireAdminApi(request);
+  if (authError) return authError;
+
   try {
     const summary = await getExecutiveReportSummary();
 

@@ -19,8 +19,6 @@ export async function GET() {
       security: "ok",
     },
     system: {
-      nodeVersion: process.version,
-      platform: process.platform,
       activeRateLimiters: getRateLimitStoreSize(),
     },
   };

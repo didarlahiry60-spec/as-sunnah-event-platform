@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { PersonCategory, AdminRole } from "@prisma/client";
 import { sanitizeRedirectUrl } from "@/lib/format";
 
@@ -149,7 +149,7 @@ export async function verifyAdminSessionToken(
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, getJwtSecretKey());
-    if (!payload.adminId || !payload.email) {
+    if (!payload.adminId || !payload.email || payload.isAdmin !== true) {
       return null;
     }
     return {
@@ -215,4 +215,19 @@ export async function clearAdminSessionCookie(): Promise<void> {
   } catch {
     // Handled in route responses
   }
+}
+
+/**
+ * Defense-in-depth helper for Admin API route handlers.
+ * Returns null if authenticated, or a 401 NextResponse otherwise.
+ */
+export async function requireAdminApi(req?: NextRequest): Promise<NextResponse | null> {
+  const session = await getAdminSession(req);
+  if (!session) {
+    return NextResponse.json(
+      { success: false, error: "অননুমোদিত অ্যাক্সেস। অ্যাডমিন লগইন আবশ্যক।" },
+      { status: 401 }
+    );
+  }
+  return null;
 }
