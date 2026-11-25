@@ -323,32 +323,34 @@ export default async function ApplicationSuccessPage({ params, searchParams }: P
           />
         </div>
 
-        {/* Official WhatsApp Channel Join Prompt for Applicants */}
-        <div className="mt-8 rounded-3xl border-2 border-lime-500/50 bg-brand-950 p-6 sm:p-8 text-ivory text-center shadow-xl">
-          <div className="mx-auto mb-3 grid size-14 place-items-center rounded-2xl bg-lime-400/20 text-lime-400 border border-lime-500/40">
-            <Radio className="size-7 animate-pulse" />
+        {/* Official WhatsApp Channel Join Prompt for Applicants (shown only when configured) */}
+        {getWhatsAppChannelUrl() && (
+          <div className="mt-8 rounded-3xl border-2 border-lime-500/50 bg-brand-950 p-6 sm:p-8 text-ivory text-center shadow-xl">
+            <div className="mx-auto mb-3 grid size-14 place-items-center rounded-2xl bg-lime-400/20 text-lime-400 border border-lime-500/40">
+              <Radio className="size-7" />
+            </div>
+            <span className="inline-block rounded-full bg-lime-500/10 px-4 py-1 text-xs font-bold text-lime-400 font-ui border border-lime-500/30 mb-2">
+              জরুরি ঘোষণা ও ফলাফল
+            </span>
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ivory">
+              ফলাফল ও আসন নিশ্চিতকরণ আপডেট পেতে যুক্ত থাকুন
+            </h3>
+            <p className="mt-2 text-sm sm:text-base text-ivory/80 max-w-lg mx-auto font-sans leading-relaxed">
+              প্রাথমিক স্ক্রিনিং, নির্বাচিতদের তালিকা ও অডিটোরিয়ামে প্রবেশের গুরুত্বপূর্ণ দিকনির্দেশনা পেতে আস-সুন্নাহ ফাউন্ডেশনের অফিশিয়াল হোয়াটসঅ্যাপ চ্যানেলে যুক্ত হোন।
+            </p>
+            <div className="mt-6">
+              <a
+                href={getWhatsAppChannelUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-13 items-center gap-3 rounded-2xl bg-[#25D366] px-8 font-ui text-base font-bold text-white shadow-lg hover:bg-[#20ba59] transition-colors cursor-pointer"
+              >
+                <Send className="size-5" />
+                <span>আস-সুন্নাহ হোয়াটসঅ্যাপ চ্যানেলে যুক্ত হোন</span>
+              </a>
+            </div>
           </div>
-          <span className="inline-block rounded-full bg-lime-500/10 px-4 py-1 text-xs font-bold text-lime-400 font-ui border border-lime-500/30 mb-2">
-            জরুরি ঘোষণা ও ফলাফল
-          </span>
-          <h3 className="font-display text-xl sm:text-2xl font-bold text-ivory">
-            ফলাফল ও আসন নিশ্চিতকরণ আপডেট পেতে যুক্ত থাকুন
-          </h3>
-          <p className="mt-2 text-sm sm:text-base text-ivory/80 max-w-lg mx-auto font-sans leading-relaxed">
-            প্রাথমিক স্ক্রিনিং, নির্বাচিতদের তালিকা ও অডিটোরিয়ামে প্রবেশের গুরুত্বপূর্ণ দিকনির্দেশনা পেতে আস-সুন্নাহ ফাউন্ডেশনের অফিশিয়াল হোয়াটসঅ্যাপ চ্যানেলে যুক্ত হোন।
-          </p>
-          <div className="mt-6">
-            <a
-              href={getWhatsAppChannelUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-13 items-center gap-3 rounded-2xl bg-[#25D366] px-8 font-ui text-base font-bold text-white shadow-lg hover:bg-[#20ba59] transition-all hover:scale-[1.02] cursor-pointer"
-            >
-              <Send className="size-5" />
-              <span>আস-সুন্নাহ হোয়াটসঅ্যাপ চ্যানেলে যুক্ত হোন</span>
-            </a>
-          </div>
-        </div>
+        )}
       </main>
     </div>
   );

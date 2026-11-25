@@ -14,8 +14,8 @@ import { messages } from "@/lib/messages";
 import { EventInvitationCard } from "@/components/events/EventInvitationCard";
 
 export function AdminWhatsAppChannelConsole() {
-  const [channelUrl, setChannelUrl] = useState<string>(messages.whatsappChannel.defaultLink);
-  const [inputUrl, setInputUrl] = useState<string>(messages.whatsappChannel.defaultLink);
+  const [channelUrl, setChannelUrl] = useState<string>("");
+  const [inputUrl, setInputUrl] = useState<string>("");
   const [savingUrl, setSavingUrl] = useState(false);
   const [urlSaved, setUrlSaved] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string>(SAMPLE_EVENTS[0]?.id || "");
@@ -26,12 +26,12 @@ export function AdminWhatsAppChannelConsole() {
       try {
         const res = await fetch("/api/admin/settings/whatsapp");
         const data = await res.json();
-        if (data.success && data.url) {
+        if (data.success && typeof data.url === "string") {
           setChannelUrl(data.url);
           setInputUrl(data.url);
         }
       } catch {
-        // Fallback to default
+        // Fallback to empty
       }
     }
     fetchUrl();
@@ -39,7 +39,6 @@ export function AdminWhatsAppChannelConsole() {
 
   const handleSaveChannelUrl = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputUrl.trim()) return;
 
     setSavingUrl(true);
     setUrlSaved(false);
@@ -74,28 +73,30 @@ export function AdminWhatsAppChannelConsole() {
       <div className="rounded-3xl border border-sand/80 bg-white p-6 sm:p-10 text-ink shadow-soft">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-6 border-b border-sand/60">
           <div className="flex items-center gap-4">
-            <div className="grid size-14 place-items-center rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 shrink-0">
-              <Radio className="size-7 animate-pulse" />
+            <div className="grid size-12 place-items-center rounded-xl bg-ivory text-brand-800 border border-sand shrink-0">
+              <Radio className="size-5" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-lime-300 bg-lime-100 px-3.5 py-0.5 text-xs font-bold text-brand-900 font-ui mb-1.5">
-                <span className="size-2 rounded-full bg-lime-500" />
-                <span>সরাসরি ওয়েবসাইট সংযোগ</span>
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-ink">
-                অফিসিয়াল WhatsApp চ্যানেল কানেকশন ও সেটিংস
+              <h2 className="font-display text-2xl font-bold text-ink">
+                অফিসিয়াল WhatsApp চ্যানেল সেটিংস
               </h2>
               <p className="mt-1 text-sm text-muted font-sans">
-                এখানে আপনার চ্যানেলের লিংক সেভ করে রাখুন। নতুন ইভেন্ট ছাড়ামাত্রই এক ক্লিকে সম্পূর্ণ ইনভিটেশন কার্ড ও ক্যাপশন এই চ্যানেলে পোস্ট হবে।
+                আপনার আসল হোয়াটসঅ্যাপ চ্যানেলের লিংক এখানে যোগ করে সংরক্ষণ করুন।
               </p>
             </div>
           </div>
 
           <div className="shrink-0">
-            <span className="inline-flex items-center gap-2 rounded-2xl bg-emerald-50 border border-emerald-200 px-5 py-3 text-sm font-ui font-bold text-emerald-900 shadow-2xs">
-              <ShieldCheck className="size-5 text-emerald-600" />
-              <span>চ্যানেল স্ট্যাটাস: সচল ও সংযুক্ত</span>
-            </span>
+            {channelUrl ? (
+              <span className="inline-flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2 text-sm font-ui font-semibold text-emerald-900">
+                <ShieldCheck className="size-4 text-emerald-600" />
+                <span>চ্যানেল সংযুক্ত রয়েছে</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2 rounded-xl bg-ivory border border-sand px-4 py-2 text-sm font-ui font-medium text-muted">
+                <span>এখনো কোনো লিংক যোগ করা হয়নি</span>
+              </span>
+            )}
           </div>
         </div>
 
@@ -112,29 +113,30 @@ export function AdminWhatsAppChannelConsole() {
                 value={inputUrl}
                 onChange={e => setInputUrl(e.target.value)}
                 placeholder="https://whatsapp.com/channel/..."
-                className="w-full min-h-13 rounded-2xl border border-sand bg-ivory/60 pl-12 pr-4 text-sm sm:text-base text-ink placeholder:text-muted focus:border-brand-600 focus:bg-white focus:outline-none font-mono transition-colors"
-                required
+                className="w-full min-h-12 rounded-xl border border-sand bg-ivory/60 pl-12 pr-4 text-sm sm:text-base text-ink placeholder:text-muted focus:border-brand-600 focus:bg-white focus:outline-none font-ui transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={savingUrl}
-              className="inline-flex min-h-13 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-lime-400 via-lime-500 to-emerald-500 px-8 font-ui text-base font-bold text-brand-950 shadow-md hover:brightness-105 transition-all cursor-pointer disabled:opacity-50 shrink-0"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 px-6 font-ui text-sm sm:text-base font-bold text-white shadow-xs transition-colors cursor-pointer disabled:opacity-50 shrink-0"
             >
-              {savingUrl ? <Loader2 className="size-5 animate-spin" /> : <CheckCircle2 className="size-5" />}
-              <span>{savingUrl ? "সংরক্ষণ হচ্ছে..." : "লিংক সংরক্ষণ করুন"}</span>
+              {savingUrl ? <Loader2 className="size-4 animate-spin" /> : <CheckCircle2 className="size-4" />}
+              <span>{savingUrl ? "সংরক্ষণ হচ্ছে..." : "সংরক্ষণ করুন"}</span>
             </button>
 
-            <a
-              href={channelUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-13 items-center justify-center gap-2 rounded-2xl border border-sand bg-sand/30 px-6 font-ui text-sm font-bold text-ink hover:bg-sand/60 transition-all cursor-pointer shrink-0"
-            >
-              <ExternalLink className="size-4" />
-              <span>চ্যানেল পরীক্ষা</span>
-            </a>
+            {channelUrl && (
+              <a
+                href={channelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-sand bg-ivory px-5 font-ui text-sm font-semibold text-ink hover:bg-sand/40 transition-colors cursor-pointer shrink-0"
+              >
+                <ExternalLink className="size-4" />
+                <span>চ্যানেল দেখুন</span>
+              </a>
+            )}
           </div>
 
           {urlSaved && (
@@ -154,8 +156,8 @@ export function AdminWhatsAppChannelConsole() {
               <span className="size-2 rounded-full bg-brand-600" aria-hidden="true" />
               <span>লাইভ ইভেন্ট ইনভিটেশন ব্রডকাস্টার</span>
             </div>
-            <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink">
-              ইভেন্ট নির্বাচন ও রাজকীয় ইনভিটেশন কার্ড তৈরি
+            <h3 className="font-display text-2xl font-bold text-ink">
+              ইভেন্ট নির্বাচন ও ইনভিটেশন কার্ড
             </h3>
             <p className="mt-1 text-base text-muted font-sans">
               যে ইভেন্টটি আপনি চ্যানেলে পাঠাতে চান সেটি বেছে নিন। স্বয়ংক্রিয়ভাবে কার্ড ও সম্পূর্ণ ক্যাপশন প্রস্তুত হয়ে যাবে।

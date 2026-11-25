@@ -27,7 +27,7 @@ interface EventInvitationCardProps {
 
 export function EventInvitationCard({
   event,
-  channelUrl = messages.whatsappChannel.defaultLink,
+  channelUrl = "",
   appBaseUrl = "https://assunnah.foundation",
 }: EventInvitationCardProps) {
   const [copied, setCopied] = useState(false);
@@ -36,6 +36,10 @@ export function EventInvitationCard({
   const startDateBn = formatBengaliDate(event.startsAt);
   const endDateBn = formatBengaliDate(event.endsAt);
   const seatsBn = toBengaliDigits(event.seats);
+
+  const channelFooter = channelUrl.trim()
+    ? `\n━━━━━━━━━━━━━━━━━━━━\nনতুন সকল আয়োজন ও সার্কুলার সবার আগে পেতে আস-সুন্নাহ ফাউন্ডেশন অফিশিয়াল হোয়াটসঅ্যাপ চ্যানেল ফলো করুন:\n${channelUrl.trim()}`
+    : "";
 
   // Formatted Rich Text Caption for WhatsApp & Social Media (clean text, no emojis)
   const captionText = `بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
@@ -55,10 +59,7 @@ ${event.eligibility.slice(0, 2).map(e => `• ${e}`).join("\n")}
 অনলাইনে সরাসরি আবেদনের লিংক:
 ${applyUrl}
 
-জরুরি হেল্পলাইন ও তথ্য: ০৯৬১০-০০১০৮৯
-━━━━━━━━━━━━━━━━━━━━
-নতুন সকল আয়োজন ও সার্কুলার সবার আগে পেতে আস-সুন্নাহ ফাউন্ডেশন অফিশিয়াল হোয়াটসঅ্যাপ চ্যানেল ফলো করুন:
-${channelUrl}`;
+জরুরি হেল্পলাইন ও তথ্য: ০৯৬১০-০০১০৮৯${channelFooter}`;
 
   const handleCopyCaption = async () => {
     try {
