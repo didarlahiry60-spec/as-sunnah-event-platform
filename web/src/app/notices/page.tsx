@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SAMPLE_NOTICES } from "@/lib/sample-data";
 import { NoticesHub } from "@/components/notices/NoticesHub";
 import { messages } from "@/lib/messages";
+import { getServerMessages } from "@/lib/i18n-server";
 import { Bell } from "lucide-react";
 import { getWhatsAppChannelUrl } from "@/lib/settings";
 
@@ -10,7 +11,12 @@ export const metadata: Metadata = {
   description: messages.noticesPage.subtitle,
 };
 
-export default function NoticesPage() {
+export const dynamic = "force-dynamic";
+
+export default async function NoticesPage() {
+  const { locale, t } = await getServerMessages();
+  const isEn = locale === "en";
+
   return (
     <div className="min-h-screen bg-ivory">
       {/* Banner */}
@@ -22,36 +28,36 @@ export default function NoticesPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-lime-500/40 bg-brand-900/80 px-4 py-1.5 font-ui text-sm font-semibold text-lime-400">
                 <Bell className="size-4" />
-                <span>{messages.noticesPage.badge}</span>
+                <span>{t.noticesPage.badge}</span>
               </div>
 
               <h1 className="mt-4 font-display text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-ivory">
-                {messages.noticesPage.title}
+                {t.noticesPage.title}
               </h1>
 
               <p className="mt-4 max-w-3xl text-lg sm:text-xl xl:text-2xl text-ivory/80 leading-relaxed font-sans">
-                {messages.noticesPage.subtitle}
+                {t.noticesPage.subtitle}
               </p>
             </div>
 
             {/* Quick Institutional Notice Stats */}
             <div className="flex flex-wrap gap-4 font-ui text-sm">
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">সর্বশেষ আপডেট</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Latest Update" : "সর্বশেষ আপডেট"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-400">
-                  ২৪/৭ লাইভ সার্কুলার
+                  {isEn ? "24/7 Live Circulars" : "২৪/৭ লাইভ সার্কুলার"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">জরুরি নোটিশ</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Urgent Notice" : "জরুরি নোটিশ"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-accent-500">
-                  ১টি জরুরি বিজ্ঞপ্তি
+                  {isEn ? "1 Urgent Alert" : "১টি জরুরি বিজ্ঞপ্তি"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">নির্বাচন ফলাফল</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Selection Results" : "নির্বাচন ফলাফল"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-300">
-                  অনলাইনে উন্মুক্ত
+                  {isEn ? "Published Online" : "অনলাইনে উন্মুক্ত"}
                 </span>
               </div>
             </div>
@@ -69,10 +75,14 @@ export default function NoticesPage() {
             </div>
             <div>
               <span className="font-ui text-sm sm:text-base font-bold text-ink">
-                নতুন সার্কুলার ও রেজাল্ট সবার আগে সরাসরি হোয়াটসঅ্যাপে পেতে চান?
+                {isEn
+                  ? "Want new circulars and results first on WhatsApp?"
+                  : "নতুন সার্কুলার ও রেজাল্ট সবার আগে সরাসরি হোয়াটসঅ্যাপে পেতে চান?"}
               </span>
               <p className="text-xs sm:text-sm text-muted font-sans">
-                আস-সুন্নাহ ফাউন্ডেশনের অফিশিয়াল হোয়াটসঅ্যাপ চ্যানেল ফলো করুন এবং যেকোনো নোটিফিকেশন পান তাৎক্ষণিকভাবে।
+                {isEn
+                  ? "Follow As-Sunnah Foundation's official WhatsApp channel for instant notifications."
+                  : "আস-সুন্নাহ ফাউন্ডেশনের অফিশিয়াল হোয়াটসঅ্যাপ চ্যানেল ফলো করুন এবং যেকোনো নোটিফিকেশন পান তাৎক্ষণিকভাবে।"}
               </p>
             </div>
           </div>
@@ -82,7 +92,7 @@ export default function NoticesPage() {
             rel="noopener noreferrer"
             className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#25D366] px-5 font-ui text-sm font-bold text-white shadow-sm hover:bg-[#20ba59] transition-all shrink-0 cursor-pointer"
           >
-            <span>চ্যানেলে যুক্ত হোন</span>
+            <span>{t.whatsappChannel.joinButton}</span>
           </a>
         </div>
 

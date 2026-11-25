@@ -4,13 +4,14 @@ import { useState, useMemo, useEffect } from "react";
 import { Search, BookOpen, Clock, User, Calendar, ArrowRight, X } from "lucide-react";
 import { BlogPostItem } from "@/lib/sample-data";
 import { formatBengaliDate, toBengaliDigits } from "@/lib/format";
-import { messages } from "@/lib/messages";
+import { useLanguage } from "@/lib/i18n";
 
 interface BlogHubProps {
   initialPosts: BlogPostItem[];
 }
 
 export function BlogHub({ initialPosts }: BlogHubProps) {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [readingPost, setReadingPost] = useState<BlogPostItem | null>(null);
@@ -68,7 +69,7 @@ export function BlogHub({ initialPosts }: BlogHubProps) {
                   : "bg-sand/60 text-ink/80 hover:bg-sand"
               }`}
             >
-              {messages.blogPage.filterAll}
+              {t.blogPage.filterAll}
             </button>
             {categories.map(cat => (
               <button
@@ -91,7 +92,7 @@ export function BlogHub({ initialPosts }: BlogHubProps) {
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder={messages.blogPage.searchPlaceholder}
+              placeholder={t.blogPage.searchPlaceholder}
               className="w-full min-h-12 rounded-2xl border border-sand bg-ivory/60 pl-12 pr-4 py-3 text-base font-sans text-ink placeholder:text-muted focus:border-brand-600 focus:bg-white focus:outline-none"
             />
           </div>
@@ -105,10 +106,10 @@ export function BlogHub({ initialPosts }: BlogHubProps) {
             <BookOpen className="size-8" />
           </div>
           <h3 className="font-display text-2xl font-bold text-ink">
-            {messages.blogPage.noPostsTitle}
+            {t.blogPage.noPostsTitle}
           </h3>
           <p className="mx-auto mt-3 max-w-md text-base text-muted">
-            {messages.blogPage.noPostsDesc}
+            {t.blogPage.noPostsDesc}
           </p>
         </div>
       ) : (
@@ -153,7 +154,7 @@ export function BlogHub({ initialPosts }: BlogHubProps) {
                   <span>{formatBengaliDate(post.publishedAt)}</span>
                 </div>
                 <div className="mt-4 flex items-center gap-1.5 font-ui text-sm sm:text-base font-bold text-brand-700 group-hover:text-brand-900">
-                  <span>{messages.blogPage.readFullPost}</span>
+                  <span>{t.blogPage.readFullPost}</span>
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>

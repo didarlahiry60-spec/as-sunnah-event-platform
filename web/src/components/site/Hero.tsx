@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/Button";
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import { padBengali } from "@/lib/format";
-import { messages } from "@/lib/messages";
+import { useLanguage } from "@/lib/i18n";
 
 function Countdown({ to }: { to: string }) {
+  const { locale, t } = useLanguage();
   const [left, setLeft] = useState<number | null>(null);
 
   useEffect(() => {
@@ -15,29 +16,29 @@ function Countdown({ to }: { to: string }) {
     if (isNaN(target)) return;
     const tick = () => setLeft(Math.max(0, target - Date.now()));
     tick();
-    const t = setInterval(tick, 1000);
-    return () => clearInterval(t);
+    const tmr = setInterval(tick, 1000);
+    return () => clearInterval(tmr);
   }, [to]);
 
   if (left === null) return <div className="h-16" />;
 
   const s = Math.floor(left / 1000);
   const parts = [
-    [messages.hero.timer.days, Math.floor(s / 86400)],
-    [messages.hero.timer.hours, Math.floor(s / 3600) % 24],
-    [messages.hero.timer.minutes, Math.floor(s / 60) % 60],
-    [messages.hero.timer.seconds, s % 60],
+    [t.hero.timer.days, Math.floor(s / 86400)],
+    [t.hero.timer.hours, Math.floor(s / 3600) % 24],
+    [t.hero.timer.minutes, Math.floor(s / 60) % 60],
+    [t.hero.timer.seconds, s % 60],
   ] as const;
 
   return (
-    <div className="flex flex-wrap gap-2 sm:gap-3" role="timer" aria-label={messages.hero.timer.ariaLabel}>
+    <div className="flex flex-wrap gap-2 sm:gap-3" role="timer" aria-label={t.hero.timer.ariaLabel}>
       {parts.map(([label, val]) => (
         <div
           key={label}
           className="min-w-14 sm:min-w-16 flex-1 rounded-xl border border-accent-500/50 bg-brand-950/60 px-2 sm:px-3 py-2 text-center backdrop-blur-xs shadow-inner"
         >
           <div className="font-ui text-xl sm:text-2xl font-bold text-accent-500 tabular-nums">
-            {padBengali(val)}
+            {locale === "en" ? String(val).padStart(2, "0") : padBengali(val)}
           </div>
           <div className="text-[11px] sm:text-xs text-ivory/80 font-ui">{label}</div>
         </div>
@@ -55,6 +56,7 @@ export function Hero({
   startsAt?: string;
   slug?: string;
 }) {
+  const { t } = useLanguage();
   const reduce = useReducedMotion();
   const rise = (i: number) =>
     reduce
@@ -102,38 +104,38 @@ export function Hero({
             className="inline-flex items-center gap-2 rounded-full border border-lime-500/30 bg-lime-500/10 px-4 py-1.5 text-sm sm:text-base font-ui text-lime-300 font-semibold"
           >
             <span className="size-2.5 rounded-full bg-lime-400" aria-hidden="true" />
-            <span>{messages.hero.badge}</span>
+            <span>{t.hero.badge}</span>
           </motion.div>
 
           <motion.h1
             {...rise(1)}
             className="mt-5 font-display text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold leading-tight text-ivory tracking-tight"
           >
-            {messages.hero.headlineLine1} <br className="hidden sm:inline" />
-            <span className="accent-foil">{messages.hero.headlineHighlight}</span>
+            {t.hero.headlineLine1} <br className="hidden sm:inline" />
+            <span className="accent-foil">{t.hero.headlineHighlight}</span>
           </motion.h1>
 
           <motion.p {...rise(2)} className="mt-6 max-w-3xl text-lg sm:text-xl xl:text-2xl text-ivory/85 leading-relaxed font-sans">
-            {messages.hero.description}
+            {t.hero.description}
           </motion.p>
 
           <motion.div {...rise(3)} className="mt-10 rounded-3xl border border-accent-500/30 bg-brand-950/50 p-6 sm:p-8 backdrop-blur-xs shadow-xl">
             <div className="mb-4 flex items-center justify-between font-ui text-base xl:text-lg">
               <span className="text-lime-300 flex items-center gap-2 font-bold">
-                <Calendar className="size-5" /> {hasEvent ? messages.hero.upcomingTitle : messages.hero.noUpcomingTitle}
+                <Calendar className="size-5" /> {hasEvent ? t.hero.upcomingTitle : t.hero.noUpcomingTitle}
               </span>
               <span className="text-ivory/85 flex items-center gap-1.5 font-medium">
-                <MapPin className="size-4 text-accent-500" /> {messages.hero.locationDhaka}
+                <MapPin className="size-4 text-accent-500" /> {t.hero.locationDhaka}
               </span>
             </div>
             <p className="mb-5 font-ui text-xl sm:text-2xl xl:text-3xl font-bold text-ivory">
-              {title ?? messages.hero.noUpcomingTitle}
+              {title ?? t.hero.noUpcomingTitle}
             </p>
             {hasEvent && startsAt ? (
               <Countdown to={startsAt} />
             ) : (
               <p className="font-ui text-base text-lime-300/90 py-2">
-                {messages.hero.noUpcomingNotice}
+                {t.hero.noUpcomingNotice}
               </p>
             )}
           </motion.div>
@@ -146,14 +148,14 @@ export function Hero({
                   variant="accent"
                   className="w-full sm:w-auto shadow-xl shadow-accent-700/30 text-base sm:text-lg px-8 py-3.5 font-bold hover:scale-[1.02] transition-transform"
                 >
-                  {messages.hero.applyNow}
+                  {t.hero.applyNow}
                 </Button>
                 <Button
                   href="/events"
                   variant="ghost"
                   className="w-full sm:w-auto text-base sm:text-lg px-8 py-3.5 font-bold hover:bg-white/10"
                 >
-                  {messages.hero.viewCalendar}
+                  {t.hero.viewCalendar}
                 </Button>
               </>
             ) : (
@@ -163,14 +165,14 @@ export function Hero({
                   variant="accent"
                   className="w-full sm:w-auto shadow-xl shadow-accent-700/30 text-base sm:text-lg px-8 py-3.5 font-bold hover:scale-[1.02] transition-transform"
                 >
-                  {messages.hero.viewCalendar}
+                  {t.hero.viewCalendar}
                 </Button>
                 <Button
                   href="/about"
                   variant="ghost"
                   className="w-full sm:w-auto text-base sm:text-lg px-8 py-3.5 font-bold hover:bg-white/10"
                 >
-                  {messages.nav.about}
+                  {t.nav.about}
                 </Button>
               </>
             )}
@@ -206,13 +208,13 @@ export function Hero({
           {/* Mihrab center content */}
           <div className="z-10 py-6 sm:py-8 flex flex-col items-center">
             <p className="font-arabic text-2xl sm:text-3xl xl:text-4xl text-amber-300 drop-shadow-[0_2px_12px_rgba(240,146,43,0.45)] font-bold leading-relaxed pb-3 sm:pb-4 select-none">
-              {messages.hero.mihrab.bismillah}
+              {t.hero.mihrab.bismillah}
             </p>
             <h3 className="mt-4 sm:mt-6 font-display text-2xl sm:text-3xl xl:text-4xl font-extrabold text-ivory tracking-tight drop-shadow-sm leading-normal">
-              {messages.hero.mihrab.title}
+              {t.hero.mihrab.title}
             </h3>
             <p className="mt-3 font-ui text-base xl:text-lg text-ivory/85 max-w-sm leading-relaxed">
-              {messages.hero.mihrab.subtitle}
+              {t.hero.mihrab.subtitle}
             </p>
           </div>
 
@@ -220,7 +222,7 @@ export function Hero({
           <div className="w-full pb-6 z-10">
             <div className="rounded-2xl border border-accent-400/50 bg-brand-950/90 py-2.5 px-4 sm:px-6 inline-block max-w-full shadow-lg shadow-brand-950/60 backdrop-blur-xs">
               <span className="font-ui text-xs sm:text-sm xl:text-base font-bold text-accent-400 tracking-wider whitespace-nowrap block truncate">
-                {messages.hero.mihrab.tag}
+                {t.hero.mihrab.tag}
               </span>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Send, CheckCircle2, AlertCircle, Loader2, RotateCcw } from "lucide-react";
-import { messages } from "@/lib/messages";
+import { useLanguage } from "@/lib/i18n";
 import { normalizeBdPhone } from "@/lib/format";
 
 interface FormState {
@@ -34,6 +34,7 @@ const INITIAL_STATE: FormState = {
 };
 
 export function ContactForm() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<FormState>(INITIAL_STATE);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -106,10 +107,10 @@ export function ContactForm() {
           <CheckCircle2 className="size-8" />
         </div>
         <h3 className="font-display text-2xl font-bold text-brand-950 sm:text-3xl">
-          {messages.contactPage.successHeading}
+          {t.contactPage.successHeading}
         </h3>
         <p className="mx-auto mt-3 max-w-lg text-sm sm:text-base leading-relaxed text-ink/85 font-sans">
-          {messages.contactPage.successText}
+          {t.contactPage.successText}
         </p>
 
         <button
@@ -117,7 +118,7 @@ export function ContactForm() {
           className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-full bg-brand-900 px-6 font-ui text-sm font-semibold text-ivory hover:bg-brand-800 transition-colors cursor-pointer"
         >
           <RotateCcw className="size-4" />
-          <span>{messages.contactPage.sendAnother}</span>
+          <span>{t.contactPage.sendAnother}</span>
         </button>
       </div>
     );
@@ -127,10 +128,10 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} noValidate className="rounded-3xl border border-sand/90 bg-white p-8 sm:p-12 xl:p-14 shadow-soft">
       <div className="mb-8 border-b border-sand/70 pb-6">
         <h3 className="font-display text-2xl sm:text-3xl xl:text-4xl font-bold text-ink">
-          {messages.contactPage.formHeading}
+          {t.contactPage.formHeading}
         </h3>
         <p className="mt-2 text-base xl:text-lg text-muted font-sans">
-          {messages.contactPage.formSubtitle}
+          {t.contactPage.formSubtitle}
         </p>
 
         {errors.general && (
@@ -146,14 +147,14 @@ export function ContactForm() {
         <div className="grid gap-6 sm:grid-cols-2">
           <div>
             <label htmlFor="contact-name" className="block font-ui text-sm sm:text-base font-bold text-ink/90 mb-2">
-              {messages.contactPage.nameLabel} <span className="text-danger">*</span>
+              {t.contactPage.nameLabel} <span className="text-danger">*</span>
             </label>
             <input
               id="contact-name"
               type="text"
               value={formData.name}
               onChange={e => setFormData({ ...formData, name: e.target.value })}
-              placeholder={messages.contactPage.namePlaceholder}
+              placeholder={t.contactPage.namePlaceholder}
               className={`w-full min-h-13 rounded-2xl border bg-ivory/50 px-5 py-3 text-base font-sans text-ink placeholder:text-muted focus:bg-white focus:outline-none transition-colors ${
                 errors.name ? "border-danger" : "border-sand focus:border-brand-600"
               }`}
@@ -168,14 +169,14 @@ export function ContactForm() {
 
           <div>
             <label htmlFor="contact-phone" className="block font-ui text-sm sm:text-base font-bold text-ink/90 mb-2">
-              {messages.contactPage.phoneLabel} <span className="text-danger">*</span>
+              {t.contactPage.phoneLabel} <span className="text-danger">*</span>
             </label>
             <input
               id="contact-phone"
               type="tel"
               value={formData.phone}
               onChange={e => setFormData({ ...formData, phone: e.target.value })}
-              placeholder={messages.contactPage.phonePlaceholder}
+              placeholder={t.contactPage.phonePlaceholder}
               className={`w-full min-h-13 rounded-2xl border bg-ivory/50 px-5 py-3 text-base font-sans text-ink placeholder:text-muted focus:bg-white focus:outline-none transition-colors ${
                 errors.phone ? "border-danger" : "border-sand focus:border-brand-600"
               }`}
@@ -193,14 +194,14 @@ export function ContactForm() {
         <div className="grid gap-6 sm:grid-cols-2">
           <div>
             <label htmlFor="contact-email" className="block font-ui text-sm sm:text-base font-bold text-ink/90 mb-2">
-              {messages.contactPage.emailLabel}
+              {t.contactPage.emailLabel}
             </label>
             <input
               id="contact-email"
               type="email"
               value={formData.email}
               onChange={e => setFormData({ ...formData, email: e.target.value })}
-              placeholder={messages.contactPage.emailPlaceholder}
+              placeholder={t.contactPage.emailPlaceholder}
               className={`w-full min-h-13 rounded-2xl border bg-ivory/50 px-5 py-3 text-base font-sans text-ink placeholder:text-muted focus:bg-white focus:outline-none transition-colors ${
                 errors.email ? "border-danger" : "border-sand focus:border-brand-600"
               }`}
@@ -215,7 +216,7 @@ export function ContactForm() {
 
           <div>
             <label htmlFor="contact-category" className="block font-ui text-sm sm:text-base font-bold text-ink/90 mb-2">
-              {messages.contactPage.categoryLabel}
+              {t.contactPage.categoryLabel}
             </label>
             <select
               id="contact-category"
@@ -223,7 +224,7 @@ export function ContactForm() {
               onChange={e => setFormData({ ...formData, category: e.target.value })}
               className="w-full min-h-13 rounded-2xl border border-sand bg-ivory/50 px-5 py-3 font-ui text-base text-ink focus:border-brand-600 focus:bg-white focus:outline-none transition-colors"
             >
-              {messages.contactPage.categoryOptions.map(opt => (
+              {t.contactPage.categoryOptions.map(opt => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>
@@ -235,14 +236,14 @@ export function ContactForm() {
         {/* Subject */}
         <div>
           <label htmlFor="contact-subject" className="block font-ui text-sm sm:text-base font-bold text-ink/90 mb-2">
-            {messages.contactPage.subjectLabel} <span className="text-danger">*</span>
+            {t.contactPage.subjectLabel} <span className="text-danger">*</span>
           </label>
           <input
             id="contact-subject"
             type="text"
             value={formData.subject}
             onChange={e => setFormData({ ...formData, subject: e.target.value })}
-            placeholder={messages.contactPage.subjectPlaceholder}
+            placeholder={t.contactPage.subjectPlaceholder}
             className={`w-full min-h-13 rounded-2xl border bg-ivory/50 px-5 py-3 text-base font-sans text-ink placeholder:text-muted focus:bg-white focus:outline-none transition-colors ${
               errors.subject ? "border-danger" : "border-sand focus:border-brand-600"
             }`}
@@ -258,14 +259,14 @@ export function ContactForm() {
         {/* Message */}
         <div>
           <label htmlFor="contact-message" className="block font-ui text-sm sm:text-base font-bold text-ink/90 mb-2">
-            {messages.contactPage.messageLabel} <span className="text-danger">*</span>
+            {t.contactPage.messageLabel} <span className="text-danger">*</span>
           </label>
           <textarea
             id="contact-message"
             rows={5}
             value={formData.message}
             onChange={e => setFormData({ ...formData, message: e.target.value })}
-            placeholder={messages.contactPage.messagePlaceholder}
+            placeholder={t.contactPage.messagePlaceholder}
             className={`w-full rounded-2xl border bg-ivory/50 p-5 text-base text-ink placeholder:text-muted focus:bg-white focus:outline-none transition-colors font-sans leading-relaxed ${
               errors.message ? "border-danger" : "border-sand focus:border-brand-600"
             }`}
@@ -288,11 +289,11 @@ export function ContactForm() {
             {isSubmitting ? (
               <>
                 <Loader2 className="size-5 animate-spin" />
-                <span>{messages.contactPage.submitting}</span>
+                <span>{t.contactPage.submitting}</span>
               </>
             ) : (
               <>
-                <span>{messages.contactPage.submitButton}</span>
+                <span>{t.contactPage.submitButton}</span>
                 <Send className="size-5" />
               </>
             )}

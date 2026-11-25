@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SAMPLE_BLOG_POSTS } from "@/lib/sample-data";
 import { BlogHub } from "@/components/blog/BlogHub";
 import { messages } from "@/lib/messages";
+import { getServerMessages } from "@/lib/i18n-server";
 import { BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -9,7 +10,12 @@ export const metadata: Metadata = {
   description: messages.blogPage.subtitle,
 };
 
-export default function BlogPage() {
+export const dynamic = "force-dynamic";
+
+export default async function BlogPage() {
+  const { locale, t } = await getServerMessages();
+  const isEn = locale === "en";
+
   return (
     <div className="min-h-screen bg-ivory">
       {/* Banner */}
@@ -21,36 +27,36 @@ export default function BlogPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-lime-500/40 bg-brand-900/80 px-4 py-1.5 font-ui text-sm font-semibold text-lime-400">
                 <BookOpen className="size-4" />
-                <span>{messages.blogPage.badge}</span>
+                <span>{t.blogPage.badge}</span>
               </div>
 
               <h1 className="mt-4 font-display text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-ivory">
-                {messages.blogPage.title}
+                {t.blogPage.title}
               </h1>
 
               <p className="mt-4 max-w-3xl text-lg sm:text-xl xl:text-2xl text-ivory/80 leading-relaxed font-sans">
-                {messages.blogPage.subtitle}
+                {t.blogPage.subtitle}
               </p>
             </div>
 
             {/* Quick KPI stats in Hero Header */}
             <div className="flex flex-wrap gap-4 font-ui text-sm">
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">প্রকাশিত প্রবন্ধ</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Published Articles" : "প্রকাশিত প্রবন্ধ"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-400">
-                  ১৫+ সংকলন
+                  {isEn ? "15+ Collections" : "১৫+ সংকলন"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">বিষয়ভিত্তিক বিভাগ</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Topic Categories" : "বিষয়ভিত্তিক বিভাগ"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-accent-500">
-                  ৫টি ক্যাটাগরি
+                  {isEn ? "5 Categories" : "৫টি ক্যাটাগরি"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">নিয়মিত পাঠক</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Regular Readers" : "নিয়মিত পাঠক"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-300">
-                  ৫০,০০০+ পাঠক
+                  {isEn ? "50,000+ Readers" : "৫০,০০০+ পাঠক"}
                 </span>
               </div>
             </div>

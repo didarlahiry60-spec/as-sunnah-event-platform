@@ -65,6 +65,7 @@ const arabic = Amiri({
 });
 
 import { siteMetadata } from "@/lib/metadata";
+import { getServerLocale } from "@/lib/i18n-server";
 
 export const metadata: Metadata = siteMetadata;
 
@@ -74,9 +75,10 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getServerLocale();
   return (
-    <html lang="bn" className={`${body.variable} ${display.variable} ${ui.variable} ${serif.variable} ${noto.variable} ${latin.variable} ${arabic.variable}`}>
+    <html lang={locale} className={`${body.variable} ${display.variable} ${ui.variable} ${serif.variable} ${noto.variable} ${latin.variable} ${arabic.variable}`}>
       <head>
         <link
           rel="preload"
@@ -108,7 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <SiteLayoutClient>{children}</SiteLayoutClient>
+        <SiteLayoutClient initialLocale={locale}>{children}</SiteLayoutClient>
         <PwaRegister />
       </body>
     </html>

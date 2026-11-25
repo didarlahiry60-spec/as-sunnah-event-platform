@@ -4,24 +4,27 @@ import { Button } from "@/components/ui/Button";
 import { Calendar, Users, MapPin, ArrowRight, Camera, Clock } from "lucide-react";
 import Link from "next/link";
 import { toBengaliDigits, formatBengaliDate } from "@/lib/format";
-import { messages } from "@/lib/messages";
+import { getServerMessages } from "@/lib/i18n-server";
 import { SAMPLE_BLOG_POSTS, SAMPLE_GALLERY } from "@/lib/sample-data";
 
 export const dynamic = "force-dynamic";
 
-const stats = [
-  messages.stats.imam,
-  messages.stats.madrasa,
-  messages.stats.volunteers,
-];
-
-const pillars = [
-  messages.pillars.pillar1,
-  messages.pillars.pillar2,
-  messages.pillars.pillar3,
-];
-
 export default async function Home() {
+  const { locale, t } = await getServerMessages();
+  const isEn = locale === "en";
+
+  const stats = [
+    t.stats.imam,
+    t.stats.madrasa,
+    t.stats.volunteers,
+  ];
+
+  const pillars = [
+    t.pillars.pillar1,
+    t.pillars.pillar2,
+    t.pillars.pillar3,
+  ];
+
   const allEvents = await getEventsData();
   const events = allEvents.filter(e => e.status === "UPCOMING").slice(0, 3);
 
@@ -61,17 +64,17 @@ export default async function Home() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 border-b border-sand pb-8">
           <div>
             <span className="font-ui text-base font-bold uppercase tracking-wider text-brand-600">
-              {messages.events.sectionTag}
+              {t.events.sectionTag}
             </span>
             <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl xl:text-5xl">
-              {messages.events.sectionTitle}
+              {t.events.sectionTitle}
             </h2>
           </div>
           <Link
             href="/events"
             className="inline-flex items-center gap-2 font-ui text-brand-700 hover:text-brand-900 font-bold text-lg group"
           >
-            <span>{messages.events.viewAll}</span>
+            <span>{t.events.viewAll}</span>
             <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -81,16 +84,16 @@ export default async function Home() {
             <div className="mx-auto size-20 rounded-full bg-lime-100 text-brand-800 grid place-items-center mb-6">
               <Calendar className="size-10" />
             </div>
-            <h3 className="font-display text-3xl font-bold text-ink">{messages.events.emptyTitle}</h3>
+            <h3 className="font-display text-3xl font-bold text-ink">{t.events.emptyTitle}</h3>
             <p className="mx-auto mt-3 max-w-xl text-lg text-muted">
-              {messages.events.emptyDescription}
+              {t.events.emptyDescription}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-5">
               <Button href="/notices" variant="primary" className="text-base px-8 py-3.5">
-                {messages.events.checkNotices}
+                {t.events.checkNotices}
               </Button>
               <Button href="/contact" variant="outline" className="text-base px-8 py-3.5">
-                {messages.events.contactUs}
+                {t.events.contactUs}
               </Button>
             </div>
           </div>
@@ -108,7 +111,7 @@ export default async function Home() {
                     </span>
                     <span className="flex items-center gap-1.5 font-ui text-sm font-medium text-muted">
                       <Users className="size-4 text-accent-500" />
-                      <span>{toBengaliDigits(e.seats ?? 0)} {messages.events.seats}</span>
+                      <span>{isEn ? (e.seats ?? 0) : toBengaliDigits(e.seats ?? 0)} {t.events.seats}</span>
                     </span>
                   </div>
 
@@ -119,18 +122,18 @@ export default async function Home() {
                   <div className="mt-6 space-y-3 text-base text-muted">
                     <p className="flex items-center gap-2.5">
                       <Calendar className="size-5 text-brand-600 shrink-0" />
-                      <span>{formatBengaliDate(e.startsAt)}</span>
+                      <span>{isEn ? new Date(e.startsAt).toLocaleDateString("en-US", { dateStyle: "medium" }) : formatBengaliDate(e.startsAt)}</span>
                     </p>
                     <p className="flex items-center gap-2.5">
                       <MapPin className="size-5 text-brand-600 shrink-0" />
-                      <span>{e.venue ?? messages.brand.auditorium}</span>
+                      <span>{e.venue ?? t.brand.auditorium}</span>
                     </p>
                   </div>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-sand">
                   <Button href={`/events/${e.slug}/apply`} variant="accent" className="w-full text-base sm:text-lg py-3.5 font-bold rounded-xl shadow-md">
-                    {messages.events.applyButton}
+                    {t.events.applyButton}
                   </Button>
                 </div>
               </article>
@@ -144,10 +147,10 @@ export default async function Home() {
         <div className="mx-auto w-full max-w-[97%] 2xl:max-w-[1900px] px-3 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="font-display text-3xl sm:text-4xl xl:text-5xl font-bold text-ink">
-              {messages.pillars.sectionTitle}
+              {t.pillars.sectionTitle}
             </h2>
             <p className="mt-4 text-muted text-lg xl:text-xl leading-relaxed">
-              {messages.pillars.sectionSubtitle}
+              {t.pillars.sectionSubtitle}
             </p>
           </div>
 
@@ -180,17 +183,17 @@ export default async function Home() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 border-b border-sand pb-8">
           <div>
             <span className="font-ui text-base font-bold uppercase tracking-wider text-brand-600">
-              জ্ঞান ও গবেষণা
+              {isEn ? "Knowledge & Research" : "জ্ঞান ও গবেষণা"}
             </span>
             <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl xl:text-5xl">
-              সাম্প্রতিক দাওয়াহ ও শিক্ষামূলক প্রবন্ধ
+              {isEn ? "Recent Da'wah & Educational Articles" : "সাম্প্রতিক দাওয়াহ ও শিক্ষামূলক প্রবন্ধ"}
             </h2>
           </div>
           <Link
             href="/blog"
             className="inline-flex items-center gap-2 font-ui text-brand-700 hover:text-brand-900 font-bold text-lg group"
           >
-            <span>সকল প্রবন্ধ দেখুন</span>
+            <span>{isEn ? "View All Articles" : "সকল প্রবন্ধ দেখুন"}</span>
             <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -242,17 +245,17 @@ export default async function Home() {
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 border-b border-brand-800 pb-8">
             <div>
               <span className="font-ui text-base font-bold uppercase tracking-wider text-lime-400">
-                স্মৃতির অ্যালবাম
+                {t.galleryPage.badge}
               </span>
               <h2 className="mt-2 font-display text-3xl font-bold text-ivory sm:text-4xl xl:text-5xl">
-                ফটো গ্যালারি ও মাঠপর্যায়ের কার্যক্রম
+                {isEn ? "Photo Gallery & Field Activities" : "ফটো গ্যালারি ও মাঠপর্যায়ের কার্যক্রম"}
               </h2>
             </div>
             <Link
               href="/gallery"
               className="inline-flex items-center gap-2 font-ui text-lime-300 hover:text-lime-200 font-bold text-lg group"
             >
-              <span>সম্পূর্ণ গ্যালারি দেখুন</span>
+              <span>{isEn ? "View Full Gallery" : "সম্পূর্ণ গ্যালারি দেখুন"}</span>
               <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>

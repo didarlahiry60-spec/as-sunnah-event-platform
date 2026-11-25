@@ -16,22 +16,23 @@ import {
   X,
 } from "lucide-react";
 import { AsSunnahLogo } from "@/components/ui/Logo";
-import { messages } from "@/lib/messages";
-
-const navLinks = [
-  { href: "/", label: messages.nav.home, icon: Home },
-  { href: "/about", label: messages.nav.about, icon: Info },
-  { href: "/events", label: messages.nav.events, icon: Calendar },
-  { href: "/gallery", label: messages.nav.gallery, icon: ImageIcon },
-  { href: "/blog", label: messages.nav.blog, icon: BookOpen },
-  { href: "/notices", label: messages.nav.notices, icon: Bell },
-  { href: "/contact", label: messages.nav.contact, icon: Phone },
-] as const;
+import { useLanguage } from "@/lib/i18n";
 
 export function Header() {
   const pathname = usePathname();
+  const { locale, setLocale, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const navLinks = [
+    { href: "/", label: t.nav.home, icon: Home },
+    { href: "/about", label: t.nav.about, icon: Info },
+    { href: "/events", label: t.nav.events, icon: Calendar },
+    { href: "/gallery", label: t.nav.gallery, icon: ImageIcon },
+    { href: "/blog", label: t.nav.blog, icon: BookOpen },
+    { href: "/notices", label: t.nav.notices, icon: Bell },
+    { href: "/contact", label: t.nav.contact, icon: Phone },
+  ] as const;
 
   // Close drawer on route change
   useEffect(() => {
@@ -82,7 +83,7 @@ export function Header() {
         {/* 1. Left: Official As-Sunnah Logo */}
         <Link
           href="/"
-          aria-label={`${messages.brand.name} ${messages.nav.home}`}
+          aria-label={`${t.brand.name} ${t.nav.home}`}
           className="flex items-center gap-2 shrink-0 transition-opacity hover:opacity-90 cursor-pointer"
         >
           <AsSunnahLogo variant="dark" />
@@ -91,7 +92,7 @@ export function Header() {
         {/* 2. Center: Desktop Horizontal Navigation Links */}
         <nav
           className="hidden lg:flex items-center gap-6 xl:gap-7 font-ui text-sm font-semibold text-ink/80"
-          aria-label="মূল ওয়েবসাইট মেনু"
+          aria-label={t.nav.mainNavLabel}
         >
           {navLinks.map((item) => {
             const isActive =
@@ -119,21 +120,43 @@ export function Header() {
         {/* 3. Right: Utility Actions (Language Switcher, User Icon, Portal Button & Mobile Toggle) */}
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Language Switcher Pill */}
-          <div className="hidden sm:inline-flex items-center rounded-xl bg-sand/60 p-0.5 text-xs font-ui border border-sand">
-            <span className="rounded-lg bg-emerald-100 text-brand-950 font-bold px-2 py-0.5 shadow-2xs">
+          <div
+            className="hidden sm:inline-flex items-center rounded-xl bg-sand/60 p-0.5 text-xs font-ui border border-sand"
+            role="group"
+            aria-label={locale === "en" ? "Select language" : "ভাষা নির্বাচন করুন"}
+          >
+            <button
+              type="button"
+              onClick={() => setLocale("bn")}
+              aria-pressed={locale === "bn"}
+              className={`rounded-lg px-2 py-0.5 transition-all cursor-pointer ${
+                locale === "bn"
+                  ? "bg-emerald-100 text-brand-950 font-bold shadow-2xs"
+                  : "text-muted hover:text-ink"
+              }`}
+            >
               বাং
-            </span>
-            <span className="px-2 py-0.5 text-muted hover:text-ink cursor-default">
+            </button>
+            <button
+              type="button"
+              onClick={() => setLocale("en")}
+              aria-pressed={locale === "en"}
+              className={`rounded-lg px-2 py-0.5 transition-all cursor-pointer ${
+                locale === "en"
+                  ? "bg-emerald-100 text-brand-950 font-bold shadow-2xs"
+                  : "text-muted hover:text-ink"
+              }`}
+            >
               EN
-            </span>
+            </button>
           </div>
 
           {/* User / Trainee Icon */}
           <Link
             href="/portal/login"
             className="inline-flex items-center justify-center size-9 rounded-xl bg-amber-100/70 hover:bg-amber-100 text-amber-900 border border-amber-300/40 transition-colors active:scale-95 cursor-pointer shadow-2xs"
-            aria-label="প্রশিক্ষণার্থী লগইন"
-            title="প্রশিক্ষণার্থী লগইন"
+            aria-label={locale === "en" ? "Trainee Login" : "প্রশিক্ষণার্থী লগইন"}
+            title={locale === "en" ? "Trainee Login" : "প্রশিক্ষণার্থী লগইন"}
           >
             <User className="size-4.5 stroke-[2.2]" />
           </Link>
@@ -143,7 +166,7 @@ export function Header() {
             href="/portal"
             className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-ui font-bold text-xs sm:text-sm shadow-xs transition active:scale-95 cursor-pointer"
           >
-            <span>{messages.nav.login}</span>
+            <span>{t.nav.login}</span>
           </Link>
 
           {/* Mobile Hamburger Toggle Button */}
@@ -151,7 +174,7 @@ export function Header() {
             type="button"
             onClick={() => setOpen(!open)}
             className="lg:hidden p-2 rounded-xl text-ink/80 hover:bg-sand/40 active:scale-95 transition cursor-pointer"
-            aria-label={open ? "মেনু বন্ধ করুন" : "মেনু খুলুন"}
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
             aria-expanded={open}
           >
             {open ? <X className="size-6 text-brand-900" /> : <Menu className="size-6 text-brand-900" />}
@@ -191,13 +214,35 @@ export function Header() {
             </nav>
 
             <div className="pt-3 border-t border-sand/80 flex items-center justify-between gap-3">
-              <div className="inline-flex items-center rounded-xl bg-sand/60 p-0.5 text-xs font-ui border border-sand">
-                <span className="rounded-lg bg-emerald-100 text-brand-950 font-bold px-2 py-0.5">
+              <div
+                className="inline-flex items-center rounded-xl bg-sand/60 p-0.5 text-xs font-ui border border-sand"
+                role="group"
+                aria-label={locale === "en" ? "Select language" : "ভাষা নির্বাচন করুন"}
+              >
+                <button
+                  type="button"
+                  onClick={() => setLocale("bn")}
+                  aria-pressed={locale === "bn"}
+                  className={`rounded-lg px-2 py-0.5 transition-all cursor-pointer ${
+                    locale === "bn"
+                      ? "bg-emerald-100 text-brand-950 font-bold"
+                      : "text-muted hover:text-ink"
+                  }`}
+                >
                   বাং
-                </span>
-                <span className="px-2 py-0.5 text-muted">
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLocale("en")}
+                  aria-pressed={locale === "en"}
+                  className={`rounded-lg px-2 py-0.5 transition-all cursor-pointer ${
+                    locale === "en"
+                      ? "bg-emerald-100 text-brand-950 font-bold"
+                      : "text-muted hover:text-ink"
+                  }`}
+                >
                   EN
-                </span>
+                </button>
               </div>
 
               <Link
@@ -205,7 +250,7 @@ export function Header() {
                 onClick={() => setOpen(false)}
                 className="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-ui font-bold text-xs shadow-xs text-center"
               >
-                {messages.nav.login}
+                {t.nav.login}
               </Link>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Play, Camera, Calendar, X, Image as ImageIcon } from "lucide-react";
 import { GalleryMediaItem } from "@/lib/sample-data";
 import { formatBengaliDate, toBengaliDigits } from "@/lib/format";
-import { messages } from "@/lib/messages";
+import { useLanguage } from "@/lib/i18n";
 
 interface GalleryHubProps {
   initialMedia: GalleryMediaItem[];
@@ -19,6 +19,7 @@ const CATEGORIES = [
 ] as const;
 
 export function GalleryHub({ initialMedia }: GalleryHubProps) {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("সকল");
   const [lightboxItem, setLightboxItem] = useState<GalleryMediaItem | null>(null);
 
@@ -78,10 +79,10 @@ export function GalleryHub({ initialMedia }: GalleryHubProps) {
             <ImageIcon className="size-8" />
           </div>
           <h3 className="font-display text-2xl font-bold text-ink">
-            {messages.galleryPage.noMediaTitle}
+            {t.galleryPage.noMediaTitle}
           </h3>
           <p className="mx-auto mt-3 max-w-md text-base text-muted">
-            {messages.galleryPage.noMediaDesc}
+            {t.galleryPage.noMediaDesc}
           </p>
         </div>
       ) : (
@@ -133,7 +134,7 @@ export function GalleryHub({ initialMedia }: GalleryHubProps) {
                   {/* Top Badges */}
                   <div className="absolute left-4 top-4 flex items-center gap-2">
                     <span className="rounded-full bg-brand-950/90 px-3.5 py-1 font-ui text-xs font-bold text-lime-400 border border-lime-500/40 backdrop-blur-xs">
-                      {isVideo ? messages.galleryPage.videoBadge : messages.galleryPage.photoBadge}
+                      {isVideo ? t.galleryPage.videoBadge : t.galleryPage.photoBadge}
                     </span>
                     {isVideo && item.videoDuration && (
                       <span className="rounded-full bg-brand-950/90 px-3 py-1 font-ui text-xs font-semibold text-ivory/90 backdrop-blur-xs">
@@ -159,7 +160,7 @@ export function GalleryHub({ initialMedia }: GalleryHubProps) {
                       {formatBengaliDate(item.date)}
                     </span>
                     <span className="font-bold text-brand-700 group-hover:underline">
-                      {isVideo ? messages.galleryPage.playVideo : messages.galleryPage.viewFull}
+                      {isVideo ? t.galleryPage.playVideo : t.galleryPage.viewFull}
                     </span>
                   </div>
                 </div>

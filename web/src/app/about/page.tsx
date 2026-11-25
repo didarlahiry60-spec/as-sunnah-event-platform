@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Users, Award, BookOpen, Building2, CheckCircle2, ArrowRight } from "lucide-react";
 import { messages } from "@/lib/messages";
+import { getServerMessages } from "@/lib/i18n-server";
 import { TRAINER_PROFILES } from "@/lib/sample-data";
 
 export const metadata: Metadata = {
@@ -9,25 +10,48 @@ export const metadata: Metadata = {
   description: messages.aboutPage.subtitle,
 };
 
-const objectives = [
-  {
-    icon: BookOpen,
-    title: "বিশুদ্ধ দ্বীনি জ্ঞান ও আধুনিক শিক্ষণপদ্ধতি",
-    desc: "প্রথাগত দ্বীনি শিক্ষার সাথে সমকালীন মনস্তত্ত্ব, যোগাযোগ দক্ষতা ও ডিজিটাল প্ল্যাটফর্ম ব্যবহারের সমন্বয় সাধন।",
-  },
-  {
-    icon: Users,
-    title: "মসজিদভিত্তিক সামাজিক নেতৃত্ব ও সংস্কার",
-    desc: "ইমাম ও খতিবদের শুধুমাত্র নামাজের ইমামতির বাইরে এনে মহল্লার পরিচ্ছন্নতা, মাদক প্রতিরোধ ও সমাজকল্যাণে নেতা হিসেবে গড়ে তোলা।",
-  },
-  {
-    icon: Award,
-    title: "স্বচ্ছতা ও জাতীয় জরুরি রেসপন্স নেটওয়ার্ক",
-    desc: "বন্যা, সাইক্লোন কিংবা যেকোনো জাতীয় দুর্যোগে সরাসরি মসজিদ ও মাদরাসার মাধ্যমে দ্রুততম সময়ে সুষম মানবিক ত্রাণ পৌঁছানো।",
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { locale, t } = await getServerMessages();
+  const isEn = locale === "en";
+
+  const objectives = isEn
+    ? [
+        {
+          icon: BookOpen,
+          title: "Pure Islamic Knowledge & Modern Pedagogy",
+          desc: "Combining traditional Islamic scholarship with contemporary psychology, communication skills, and digital platforms.",
+        },
+        {
+          icon: Users,
+          title: "Mosque-Centered Social Leadership & Reform",
+          desc: "Empowering Imams and Khatibs as community leaders in neighborhood cleanliness, anti-drug initiatives, and social welfare.",
+        },
+        {
+          icon: Award,
+          title: "Transparency & National Emergency Response",
+          desc: "Delivering rapid, well-coordinated humanitarian relief directly through mosques and madrasas during floods, cyclones, and disasters.",
+        },
+      ]
+    : [
+        {
+          icon: BookOpen,
+          title: "বিশুদ্ধ দ্বীনি জ্ঞান ও আধুনিক শিক্ষণপদ্ধতি",
+          desc: "প্রথাগত দ্বীনি শিক্ষার সাথে সমকালীন মনস্তত্ত্ব, যোগাযোগ দক্ষতা ও ডিজিটাল প্ল্যাটফর্ম ব্যবহারের সমন্বয় সাধন।",
+        },
+        {
+          icon: Users,
+          title: "মসজিদভিত্তিক সামাজিক নেতৃত্ব ও সংস্কার",
+          desc: "ইমাম ও খতিবদের শুধুমাত্র নামাজের ইমামতির বাইরে এনে মহল্লার পরিচ্ছন্নতা, মাদক প্রতিরোধ ও সমাজকল্যাণে নেতা হিসেবে গড়ে তোলা।",
+        },
+        {
+          icon: Award,
+          title: "স্বচ্ছতা ও জাতীয় জরুরি রেসপন্স নেটওয়ার্ক",
+          desc: "বন্যা, সাইক্লোন কিংবা যেকোনো জাতীয় দুর্যোগে সরাসরি মসজিদ ও মাদরাসার মাধ্যমে দ্রুততম সময়ে সুষম মানবিক ত্রাণ পৌঁছানো।",
+        },
+      ];
+
   return (
     <div className="min-h-screen bg-ivory">
       {/* Page Hero */}
@@ -39,36 +63,36 @@ export default function AboutPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-lime-500/40 bg-brand-900/80 px-5 py-2 font-ui text-sm font-semibold text-lime-400">
                 <span className="size-2.5 rounded-full bg-lime-400" aria-hidden="true" />
-                <span>{messages.aboutPage.badge}</span>
+                <span>{t.aboutPage.badge}</span>
               </div>
 
               <h1 className="mt-5 font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-ivory">
-                {messages.aboutPage.title}
+                {t.aboutPage.title}
               </h1>
 
               <p className="mt-5 max-w-3xl text-lg sm:text-xl xl:text-2xl text-ivory/80 leading-relaxed font-sans">
-                {messages.aboutPage.subtitle}
+                {t.aboutPage.subtitle}
               </p>
             </div>
 
             {/* Quick Institutional Highlights */}
             <div className="flex flex-wrap gap-4 font-ui text-sm">
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">প্রতিষ্ঠাতা ও চেয়ারম্যান</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Founder & Chairman" : "প্রতিষ্ঠাতা ও চেয়ারম্যান"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-400">
-                  শায়খ আহমাদুল্লাহ
+                  {isEn ? "Shaikh Ahmadullah" : "শায়খ আহমাদুল্লাহ"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">সেবাপ্রাপ্ত মানুষ</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "People Served" : "সেবাপ্রাপ্ত মানুষ"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-accent-500">
-                  ১ কোটিরও বেশি
+                  {isEn ? "Over 10 Million" : "১ কোটিরও বেশি"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">মাঠপর্যায়ে সেবা</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Field Network" : "মাঠপর্যায়ে সেবা"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-300">
-                  ৬৪ জেলায় নেটওয়ার্ক
+                  {isEn ? "All 64 Districts" : "৬৪ জেলায় নেটওয়ার্ক"}
                 </span>
               </div>
             </div>
@@ -83,13 +107,13 @@ export default function AboutPage() {
           <div className="lg:col-span-8 rounded-3xl border border-sand/90 bg-white p-10 sm:p-12 xl:p-14 shadow-lg flex flex-col justify-between">
             <div>
               <span className="font-ui text-sm xl:text-base font-bold uppercase tracking-wider text-brand-600">
-                আমাদের দৃষ্টিভঙ্গি
+                {isEn ? "Our Vision" : "আমাদের দৃষ্টিভঙ্গি"}
               </span>
               <h2 className="mt-3 font-display text-3xl sm:text-4xl xl:text-5xl font-bold text-ink leading-tight">
-                {messages.aboutPage.missionHeading}
+                {t.aboutPage.missionHeading}
               </h2>
               <p className="mt-6 text-lg sm:text-xl xl:text-2xl leading-relaxed text-ink/85 font-sans">
-                {messages.aboutPage.missionBody}
+                {t.aboutPage.missionBody}
               </p>
             </div>
 

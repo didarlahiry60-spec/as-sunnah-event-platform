@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { MapPin, Phone, Mail, Clock, Headphones, ExternalLink } from "lucide-react";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { messages } from "@/lib/messages";
+import { getServerMessages } from "@/lib/i18n-server";
 import { CONTACT_INFO } from "@/lib/sample-data";
 
 export const metadata: Metadata = {
@@ -9,7 +10,12 @@ export const metadata: Metadata = {
   description: messages.contactPage.subtitle,
 };
 
-export default function ContactPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ContactPage() {
+  const { locale, t } = await getServerMessages();
+  const isEn = locale === "en";
+
   return (
     <div className="min-h-screen bg-ivory">
       {/* Page Hero */}
@@ -21,36 +27,36 @@ export default function ContactPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-lime-500/40 bg-brand-900/80 px-4 py-1.5 font-ui text-sm font-semibold text-lime-400">
                 <Headphones className="size-4" />
-                <span>{messages.contactPage.badge}</span>
+                <span>{t.contactPage.badge}</span>
               </div>
 
               <h1 className="mt-4 font-display text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-ivory">
-                {messages.contactPage.title}
+                {t.contactPage.title}
               </h1>
 
               <p className="mt-4 max-w-3xl text-lg sm:text-xl xl:text-2xl text-ivory/80 leading-relaxed font-sans">
-                {messages.contactPage.subtitle}
+                {t.contactPage.subtitle}
               </p>
             </div>
 
             {/* Quick KPI stats in Hero Header */}
             <div className="flex flex-wrap gap-4 font-ui text-sm">
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">জরুরি হেল্পলাইন</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Emergency Helpline" : "জরুরি হেল্পলাইন"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-400">
-                  ০৯৬১০-০০১০৮৯
+                  {isEn ? "09610-001089" : "০৯৬১০-০০১০৮৯"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">কল সেন্টার সময়সূচি</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Call Center Hours" : "কল সেন্টার সময়সূচি"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-accent-500">
-                  সকাল ৮টা — রাত ১০টা
+                  {isEn ? "8:00 AM — 10:00 PM" : "সকাল ৮টা — রাত ১০টা"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">কমপ্লেক্স লোকেশন</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Complex Location" : "কমপ্লেক্স লোকেশন"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-300">
-                  আফতাবনগর, ঢাকা
+                  {isEn ? "Aftabnagar, Dhaka" : "আফতাবনগর, ঢাকা"}
                 </span>
               </div>
             </div>

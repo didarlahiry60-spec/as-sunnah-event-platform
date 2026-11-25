@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SAMPLE_GALLERY } from "@/lib/sample-data";
 import { GalleryHub } from "@/components/gallery/GalleryHub";
 import { messages } from "@/lib/messages";
+import { getServerMessages } from "@/lib/i18n-server";
 import { Camera } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -9,7 +10,12 @@ export const metadata: Metadata = {
   description: messages.galleryPage.subtitle,
 };
 
-export default function GalleryPage() {
+export const dynamic = "force-dynamic";
+
+export default async function GalleryPage() {
+  const { locale, t } = await getServerMessages();
+  const isEn = locale === "en";
+
   return (
     <div className="min-h-screen bg-ivory">
       {/* Banner */}
@@ -21,36 +27,36 @@ export default function GalleryPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-lime-500/40 bg-brand-900/80 px-4 py-1.5 font-ui text-sm font-semibold text-lime-400">
                 <Camera className="size-4" />
-                <span>{messages.galleryPage.badge}</span>
+                <span>{t.galleryPage.badge}</span>
               </div>
 
               <h1 className="mt-4 font-display text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-ivory">
-                {messages.galleryPage.title}
+                {t.galleryPage.title}
               </h1>
 
               <p className="mt-4 max-w-3xl text-lg sm:text-xl xl:text-2xl text-ivory/80 leading-relaxed font-sans">
-                {messages.galleryPage.subtitle}
+                {t.galleryPage.subtitle}
               </p>
             </div>
 
             {/* Quick KPI stats in Hero Header */}
             <div className="flex flex-wrap gap-4 font-ui text-sm">
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">মিডিয়া অ্যালবাম</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Media Albums" : "মিডিয়া অ্যালবাম"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-400">
-                  ৮টি সমগ্র
+                  {isEn ? "8 Collections" : "৮টি সমগ্র"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">বাস্তব ফুটেজ</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Real Footage" : "বাস্তব ফুটেজ"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-accent-500">
-                  ১০০% মাঠপর্যায়
+                  {isEn ? "100% Field Work" : "১০০% মাঠপর্যায়"}
                 </span>
               </div>
               <div className="rounded-2xl border border-brand-800 bg-brand-900/70 px-5 py-3.5 backdrop-blur-xs shadow-md">
-                <span className="text-ivory/70 block text-xs sm:text-sm">ভিডিও কোয়ালিটি</span>
+                <span className="text-ivory/70 block text-xs sm:text-sm">{isEn ? "Video Quality" : "ভিডিও কোয়ালিটি"}</span>
                 <span className="font-display text-xl sm:text-2xl font-bold text-lime-300">
-                  এইচডি ও ৪কে
+                  {isEn ? "HD & 4K" : "এইচডি ও ৪কে"}
                 </span>
               </div>
             </div>

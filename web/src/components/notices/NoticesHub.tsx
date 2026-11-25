@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Search, Bell, AlertTriangle, Calendar, ChevronRight, X } from "lucide-react";
 import { NoticeItem } from "@/lib/sample-data";
 import { formatBengaliDate, toBengaliDigits } from "@/lib/format";
-import { messages } from "@/lib/messages";
+import { useLanguage } from "@/lib/i18n";
 
 interface NoticesHubProps {
   initialNotices: NoticeItem[];
@@ -13,6 +13,7 @@ interface NoticesHubProps {
 const CATEGORIES = ["সকল", "বিজ্ঞপ্তি", "ফলাফল", "সময়সূচি", "নির্দেশনা"] as const;
 
 export function NoticesHub({ initialNotices }: NoticesHubProps) {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("সকল");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeNotice, setActiveNotice] = useState<NoticeItem | null>(null);
@@ -65,7 +66,7 @@ export function NoticesHub({ initialNotices }: NoticesHubProps) {
                     : "bg-sand/60 text-ink/80 hover:bg-sand"
                 }`}
               >
-                {cat === "সকল" ? messages.noticesPage.filterAll : cat}
+                {cat === "সকল" ? t.noticesPage.filterAll : cat}
               </button>
             ))}
           </div>
@@ -77,7 +78,7 @@ export function NoticesHub({ initialNotices }: NoticesHubProps) {
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder={messages.noticesPage.searchPlaceholder}
+              placeholder={t.noticesPage.searchPlaceholder}
               className="w-full min-h-12 rounded-2xl border border-sand bg-ivory/60 pl-12 pr-10 py-3 text-base font-sans text-ink placeholder:text-muted focus:border-brand-600 focus:bg-white focus:outline-none"
             />
             {searchQuery && (
@@ -121,10 +122,10 @@ export function NoticesHub({ initialNotices }: NoticesHubProps) {
             <Bell className="size-8" />
           </div>
           <h3 className="font-display text-2xl font-bold text-ink">
-            {messages.noticesPage.noNoticesTitle}
+            {t.noticesPage.noNoticesTitle}
           </h3>
           <p className="mx-auto mt-3 max-w-md text-base text-muted">
-            {messages.noticesPage.noNoticesDesc}
+            {t.noticesPage.noNoticesDesc}
           </p>
         </div>
       ) : (
@@ -155,7 +156,7 @@ export function NoticesHub({ initialNotices }: NoticesHubProps) {
                     {isUrgent && (
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-500 px-3.5 py-1 font-ui text-xs sm:text-sm font-bold text-brand-950">
                         <AlertTriangle className="size-3.5" />
-                        {messages.noticesPage.urgentBadge}
+                        {t.noticesPage.urgentBadge}
                       </span>
                     )}
                     <span className="rounded-full bg-sand px-3.5 py-1 font-ui text-xs sm:text-sm font-bold text-brand-900">
@@ -163,7 +164,7 @@ export function NoticesHub({ initialNotices }: NoticesHubProps) {
                     </span>
                     <span className="flex items-center gap-1.5 font-ui text-xs sm:text-sm text-muted">
                       <Calendar className="size-3.5 text-brand-600" />
-                      {messages.noticesPage.publishedAtLabel}{" "}
+                      {t.noticesPage.publishedAtLabel}{" "}
                       {formatBengaliDate(notice.publishedAt)}
                     </span>
                   </div>
@@ -202,7 +203,7 @@ export function NoticesHub({ initialNotices }: NoticesHubProps) {
           <div className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl sm:p-8">
             <button
               onClick={() => setActiveNotice(null)}
-              aria-label={messages.noticesPage.closeModal}
+              aria-label={t.noticesPage.closeModal}
               className="absolute right-4 top-4 grid size-9 place-items-center rounded-full bg-sand/70 text-ink hover:bg-sand transition-colors cursor-pointer"
             >
               <X className="size-5" />
@@ -211,7 +212,7 @@ export function NoticesHub({ initialNotices }: NoticesHubProps) {
             <div className="flex items-center gap-2">
               {activeNotice.isUrgent && (
                 <span className="rounded-full bg-accent-500 px-2.5 py-0.5 font-ui text-xs font-bold text-brand-950">
-                  {messages.noticesPage.urgentBadge}
+                  {t.noticesPage.urgentBadge}
                 </span>
               )}
               <span className="rounded-full bg-sand px-3 py-0.5 font-ui text-xs font-bold text-brand-900">
@@ -238,7 +239,7 @@ export function NoticesHub({ initialNotices }: NoticesHubProps) {
                 onClick={() => setActiveNotice(null)}
                 className="rounded-full bg-brand-900 px-5 py-2 font-ui text-xs font-semibold text-ivory hover:bg-brand-800 cursor-pointer"
               >
-                {messages.noticesPage.closeModal}
+                {t.noticesPage.closeModal}
               </button>
             </div>
           </div>

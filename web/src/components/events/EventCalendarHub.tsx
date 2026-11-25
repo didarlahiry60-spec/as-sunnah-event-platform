@@ -24,7 +24,7 @@ import {
   getDhakaDateKey,
   getDateKeysBetween,
 } from "@/lib/format";
-import { messages } from "@/lib/messages";
+import { useLanguage } from "@/lib/i18n";
 
 const WEEKDAYS_BN = [
   { short: "রবি", full: "রবিবার" },
@@ -41,6 +41,7 @@ interface EventCalendarHubProps {
 }
 
 export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
+  const { t } = useLanguage();
   // Active Tab: upcoming | completed | all
   const [activeTab, setActiveTab] = useState<"UPCOMING" | "COMPLETED" | "ALL">("UPCOMING");
   const [selectedType, setSelectedType] = useState<string>("ALL");
@@ -213,7 +214,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                   : "text-ink/80 hover:text-ink"
               }`}
             >
-              <span>{messages.eventsPage.tabUpcoming}</span>
+              <span>{t.eventsPage.tabUpcoming}</span>
               <span
                 className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
                   activeTab === "UPCOMING" ? "bg-lime-400 text-brand-950" : "bg-sand text-muted"
@@ -233,7 +234,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                   : "text-ink/80 hover:text-ink"
               }`}
             >
-              <span>{messages.eventsPage.tabPast}</span>
+              <span>{t.eventsPage.tabPast}</span>
               <span
                 className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
                   activeTab === "COMPLETED" ? "bg-lime-400 text-brand-950" : "bg-sand text-muted"
@@ -253,7 +254,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                   : "text-ink/80 hover:text-ink"
               }`}
             >
-              <span>{messages.eventsPage.tabAll}</span>
+              <span>{t.eventsPage.tabAll}</span>
               <span
                 className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
                   activeTab === "ALL" ? "bg-lime-400 text-brand-950" : "bg-sand text-muted"
@@ -273,7 +274,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder={messages.eventsPage.searchPlaceholder}
+                placeholder={t.eventsPage.searchPlaceholder}
                 className="w-full min-h-12 rounded-2xl border border-sand bg-ivory/60 pl-12 pr-10 py-3 text-base font-sans text-ink placeholder:text-muted focus:border-brand-600 focus:bg-white focus:outline-none transition-colors"
               />
               {searchQuery && (
@@ -320,7 +321,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
         {/* Category Pills Row */}
         <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-sand/70 pt-5">
           <span className="font-ui text-sm font-bold text-muted">
-            {messages.eventsPage.typeFilterLabel}
+            {t.eventsPage.typeFilterLabel}
           </span>
           <button
             onClick={() => setSelectedType("ALL")}
@@ -330,7 +331,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                 : "bg-sand/60 text-ink/80 hover:bg-sand"
             }`}
           >
-            {messages.eventsPage.filterAllTypes}
+            {t.eventsPage.filterAllTypes}
           </button>
           {eventTypes.map(type => (
             <button
@@ -358,7 +359,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
               <CalendarIcon className="size-4" />
             </span>
             <span className="text-sm font-ui">
-              <strong>{messages.eventsPage.selectedDatePrefix}</strong>{" "}
+              <strong>{t.eventsPage.selectedDatePrefix}</strong>{" "}
               <span className="font-bold text-brand-900">{formattedSelectedDate}</span>
               {" — "}
               <span className="text-muted">
@@ -373,7 +374,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
             className="inline-flex min-h-8 items-center gap-1.5 rounded-lg bg-brand-900 px-3.5 py-1 text-xs font-ui font-semibold text-ivory hover:bg-brand-800 transition-colors cursor-pointer"
           >
             <RotateCcw className="size-3" />
-            <span>{messages.eventsPage.clearDateFilter}</span>
+            <span>{t.eventsPage.clearDateFilter}</span>
           </button>
         </div>
       )}
@@ -387,7 +388,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sand pb-4">
             <div>
               <span className="font-ui text-xs font-semibold uppercase tracking-wider text-brand-600">
-                {messages.eventsPage.calendarTitle}
+                {t.eventsPage.calendarTitle}
               </span>
               <h2 className="font-display text-2xl font-bold text-ink sm:text-3xl">
                 {monthTitleBn}
@@ -522,7 +523,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                       <CalendarIcon className="size-5" />
                     </span>
                     <h3 className="font-display text-lg font-bold text-ivory">
-                      {messages.eventsPage.calendarTitle}
+                      {t.eventsPage.calendarTitle}
                     </h3>
                   </div>
                   <button
@@ -620,7 +621,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                     <span className="size-2 rounded-full bg-accent-500" />
                     <span>ইভেন্টের তারিখ</span>
                   </span>
-                  <span>{messages.eventsPage.calendarHint}</span>
+                  <span>{t.eventsPage.calendarHint}</span>
                 </div>
               </div>
             </div>
@@ -672,7 +673,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
             {/* Header: Count & Quick Reset */}
             <div className="flex items-center justify-between">
               <div className="font-ui text-sm font-semibold text-muted">
-                {messages.eventsPage.totalEventsCount}{" "}
+                {t.eventsPage.totalEventsCount}{" "}
                 <span className="font-bold text-brand-900">
                   {toBengaliDigits(filteredEvents.length)}টি আয়োজন
                 </span>
@@ -687,7 +688,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                   className="inline-flex items-center gap-1 text-xs font-ui font-semibold text-brand-700 hover:underline cursor-pointer"
                 >
                   <RotateCcw className="size-3" />
-                  <span>{messages.eventsPage.clearDateFilter}</span>
+                  <span>{t.eventsPage.clearDateFilter}</span>
                 </button>
               )}
             </div>
@@ -699,12 +700,12 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                   <CalendarIcon className="size-8" />
                 </div>
                 <h4 className="font-display text-2xl font-bold text-ink">
-                  {messages.eventsPage.noEventsTitle}
+                  {t.eventsPage.noEventsTitle}
                 </h4>
                 <p className="mx-auto mt-2 max-w-md text-sm text-muted">
                   {selectedDateKey && allEventsByDate.has(selectedDateKey)
                     ? "নির্বাচিত তারিখে অন্য ক্যাটাগরি বা আর্কাইভে ইভেন্ট রয়েছে। অনুগ্রহ করে 'সকল আয়োজন' ট্যাবে ক্লিক করুন।"
-                    : messages.eventsPage.noEventsDesc}
+                    : t.eventsPage.noEventsDesc}
                 </p>
                 <div className="mt-6 flex flex-wrap justify-center gap-3">
                   {selectedDateKey && allEventsByDate.has(selectedDateKey) && (
@@ -725,7 +726,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                     className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-sand bg-sand/60 px-5 py-2 text-xs font-ui font-semibold text-ink hover:bg-sand cursor-pointer"
                   >
                     <RotateCcw className="size-3.5" />
-                    <span>{messages.eventsPage.clearDateFilter}</span>
+                    <span>{t.eventsPage.clearDateFilter}</span>
                   </button>
                 </div>
               </div>
@@ -798,10 +799,10 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                                 )}
                                 <span>
                                   {isUpcoming
-                                    ? messages.eventsPage.statusUpcomingBadge
+                                    ? t.eventsPage.statusUpcomingBadge
                                     : isCompleted
-                                    ? messages.eventsPage.statusCompletedBadge
-                                    : messages.eventsPage.statusOngoingBadge}
+                                    ? t.eventsPage.statusCompletedBadge
+                                    : t.eventsPage.statusOngoingBadge}
                                 </span>
                               </span>
                             </div>
@@ -810,7 +811,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                             <div className="flex items-center gap-2 font-ui text-sm sm:text-base text-muted">
                               <Users className="size-4 sm:size-5 text-accent-600" />
                               <span>
-                                {messages.eventsPage.seatsCountLabel}{" "}
+                                {t.eventsPage.seatsCountLabel}{" "}
                                 <strong className="text-ink">
                                   {toBengaliDigits(event.seats)}
                                 </strong>
@@ -860,7 +861,7 @@ export function EventCalendarHub({ initialEvents }: EventCalendarHubProps) {
                                 : "border border-sand bg-sand/60 text-ink/80 hover:bg-sand"
                             }`}
                           >
-                            <span>{messages.eventsPage.detailsAndApply}</span>
+                            <span>{t.eventsPage.detailsAndApply}</span>
                             <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
                           </Link>
                         </div>
