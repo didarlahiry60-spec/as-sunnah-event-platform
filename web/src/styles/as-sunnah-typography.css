@@ -1,0 +1,277 @@
+/**
+ * As-Sunnah Foundation Complete Typography System
+ * Reverse Engineered from assunnahfoundation.org
+ *
+ * Font Stacks:
+ * - Primary: "UbuntuSans", "Bornomala", sans-serif (English in UbuntuSans, Bengali in Bornomala)
+ * - Secondary: "PublicSans", "Bornomala", sans-serif
+ * - Pure Bangla: "Bornomala", sans-serif
+ *
+ * Colors:
+ * - Primary Main: #008E48 (Green)
+ * - Primary Dark: #006648
+ * - Primary Darker: #00443D
+ * - Primary Light: #CEF5E3
+ * - Primary Lighter: #EEF2F0
+ * - Text Primary: #0F2920 / #212B36
+ * - Text Secondary: #637381
+ * - Text Contrast: #FFFFFF
+ */
+
+@import './as-sunnah-fonts.css';
+
+:root {
+  /* Font Family Variables */
+  --as-font-primary: 'UbuntuSans', 'Bornomala', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --as-font-secondary: 'PublicSans', 'Bornomala', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --as-font-bangla: 'Bornomala', sans-serif;
+
+  /* Brand Colors */
+  --as-primary-main: #008E48;
+  --as-primary-dark: #006648;
+  --as-primary-darker: #00443D;
+  --as-primary-light: #CEF5E3;
+  --as-primary-lighter: #EEF2F0;
+
+  --as-text-primary: #0F2920;
+  --as-text-dark: #212B36;
+  --as-text-secondary: #637381;
+  --as-text-white: #FFFFFF;
+}
+
+/* Global Base Typography */
+html, body {
+  font-family: var(--as-font-primary);
+  color: var(--as-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   Heading Hierarchy (Reverse Engineered exact sizes & line-heights)
+   ========================================================================== */
+
+/* H1 - Huge Hero / Main Page Titles */
+.as-h1, h1.as-heading {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 2.5rem; /* 40px mobile */
+  line-height: 1.433; /* 86/60 */
+  color: var(--as-text-primary);
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 900px) {
+  .as-h1, h1.as-heading {
+    font-size: 3.75rem; /* 60px desktop */
+    line-height: 86px;
+  }
+}
+
+/* H2 - Section Major Headings */
+.as-h2, h2.as-heading {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 2rem; /* 32px mobile */
+  line-height: 1.416; /* 68/48 */
+  color: var(--as-text-primary);
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 900px) {
+  .as-h2, h2.as-heading {
+    font-size: 3rem; /* 48px desktop */
+    line-height: 68px;
+  }
+}
+
+/* H3 - About Page Section Headers (যেমন: অনুমোদনসমূহ, নীতি ও আদর্শ, লক্ষ্য-উদ্দেশ্য) */
+.as-h3, h3.as-heading, .as-section-title {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 1.875rem; /* 30px (xs) */
+  line-height: 1.4;    /* 42/30 -> 42px */
+  color: var(--as-text-primary);
+  margin-bottom: 0.75rem;
+}
+@media (min-width: 900px) {
+  .as-h3, h3.as-heading, .as-section-title {
+    font-size: 2rem; /* 32px (md) */
+  }
+}
+@media (min-width: 1200px) {
+  .as-h3, h3.as-heading, .as-section-title {
+    font-size: 2.25rem; /* 36px (lg) */
+  }
+}
+
+/* H4 - Feature & Card Large Titles (যেমন: মাসিক নিউজলেটার কার্ড হেডার) */
+.as-h4, h4.as-heading {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.25; /* 30/24 -> 30px */
+  color: var(--as-text-primary);
+}
+
+/* H5 - Sub-section Headings / Footer Column Headings */
+.as-h5, h5.as-heading, .as-footer-heading {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.4;   /* 28/20 -> 28px */
+  color: var(--as-text-primary);
+}
+
+/* H6 - Card Small Headers (যেমন: নিবন্ধন সনদ, ISO সনদ) */
+.as-h6, h6.as-heading, .as-card-title {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 1rem;   /* 16px */
+  line-height: 1.75; /* 28/16 -> 28px */
+  color: var(--as-text-primary);
+}
+
+/* ==========================================================================
+   Subtitles & Body Typography
+   ========================================================================== */
+
+/* Subtitle 1 */
+.as-subtitle1 {
+  font-family: var(--as-font-primary);
+  font-weight: 600;
+  font-size: 1rem; /* 16px */
+  line-height: 1.5;
+  color: var(--as-text-primary);
+}
+
+/* Subtitle 2 */
+.as-subtitle2 {
+  font-family: var(--as-font-primary);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.714;  /* 24/14 -> 24px */
+  color: var(--as-text-secondary);
+}
+
+/* Body 1 - Main Content Paragraphs (আস-সুন্নাহ ফাউন্ডেশন এর মূল বর্ণনা) */
+.as-body1, p.as-text {
+  font-family: var(--as-font-primary);
+  font-weight: 400;
+  font-size: 1rem; /* 16px xs */
+  line-height: 1.5; /* 24px */
+  color: var(--as-text-primary);
+}
+@media (min-width: 1200px) {
+  .as-body1, p.as-text {
+    font-size: 1.0625rem; /* 17px lg */
+  }
+}
+
+/* Body 1 Bold (পয়েন্ট তালিকা ও গুরুত্বপূর্ণ বার্তা) */
+.as-body1-bold {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--as-text-primary);
+}
+@media (min-width: 1200px) {
+  .as-body1-bold {
+    font-size: 1.0625rem;
+  }
+}
+
+/* Body 2 - Top Banner & Secondary Text */
+.as-body2, .as-banner-text {
+  font-family: var(--as-font-primary);
+  font-weight: 400;
+  font-size: 1rem;   /* 16px */
+  line-height: 1.625; /* 26/16 -> 26px */
+  color: var(--as-text-secondary);
+}
+
+/* Caption - Smallest Helper Text */
+.as-caption {
+  font-family: var(--as-font-primary);
+  font-weight: 400;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.5;
+  color: var(--as-text-secondary);
+}
+
+/* Overline - Small Uppercase Labels */
+.as-overline {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--as-text-secondary);
+}
+
+/* ==========================================================================
+   Component Specific Typography
+   ========================================================================== */
+
+/* Navbar Navigation Links */
+.as-nav-link {
+  font-family: var(--as-font-primary);
+  font-weight: 400;
+  font-size: 1rem; /* 16px */
+  line-height: 1.5; /* 24px */
+  color: var(--as-text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.as-nav-link:hover, .as-nav-link.active {
+  color: var(--as-primary-main);
+  font-weight: 600;
+}
+
+/* Button Typography */
+.as-btn, button.as-btn {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 1.0625rem; /* 17px */
+  line-height: 1.5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Button Small / Chip / Language Toggle (যেমন: 'বাং' / 'En') */
+.as-btn-sm {
+  font-family: var(--as-font-primary);
+  font-weight: 700;
+  font-size: 0.875rem; /* 14px */
+  line-height: 24px;
+}
+
+/* Primary Button Styling */
+.as-btn-primary {
+  background-color: var(--as-primary-main);
+  color: var(--as-text-white);
+  border: none;
+  padding: 10px 24px;
+}
+.as-btn-primary:hover {
+  background-color: var(--as-primary-dark);
+}
+
+/* Secondary / Outline Button */
+.as-btn-outline {
+  background-color: transparent;
+  color: var(--as-primary-main);
+  border: 1.5px solid var(--as-primary-main);
+  padding: 8px 20px;
+}
+.as-btn-outline:hover {
+  background-color: var(--as-primary-lighter);
+}
+
+/* Arabic / RTL Specific Styles */
+[dir="rtl"], .as-arabic-text {
+  direction: rtl;
+  text-align: right;
+  font-family: var(--as-font-primary);
+}

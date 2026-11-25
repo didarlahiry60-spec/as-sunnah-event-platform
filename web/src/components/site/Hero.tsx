@@ -2,7 +2,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Calendar, MapPin, Sparkles } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
+import Image from "next/image";
 import { padBengali } from "@/lib/format";
 import { messages } from "@/lib/messages";
 
@@ -94,102 +95,131 @@ export function Hero({
         <rect width="100%" height="100%" fill="url(#lattice)" />
       </svg>
 
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 md:grid-cols-[1.25fr_1fr]">
+      <div className="mx-auto grid w-full max-w-[97%] 2xl:max-w-[1900px] items-center gap-10 lg:gap-14 xl:gap-20 px-3 sm:px-6 lg:px-8 md:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.4fr_1fr]">
         <div>
           <motion.div
             {...rise(0)}
-            className="inline-flex items-center gap-2 rounded-full border border-lime-500/30 bg-lime-500/10 px-3.5 py-1 text-xs sm:text-sm font-ui text-lime-300"
+            className="inline-flex items-center gap-2 rounded-full border border-lime-500/30 bg-lime-500/10 px-4 py-1.5 text-sm sm:text-base font-ui text-lime-300 font-semibold"
           >
-            <Sparkles className="size-3.5 text-lime-400" />
+            <span className="size-2.5 rounded-full bg-lime-400" aria-hidden="true" />
             <span>{messages.hero.badge}</span>
           </motion.div>
 
           <motion.h1
             {...rise(1)}
-            className="mt-4 font-display text-4xl font-bold leading-tight sm:text-5xl md:text-6xl text-ivory"
+            className="mt-5 font-display text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold leading-tight text-ivory tracking-tight"
           >
             {messages.hero.headlineLine1} <br className="hidden sm:inline" />
             <span className="accent-foil">{messages.hero.headlineHighlight}</span>
           </motion.h1>
 
-          <motion.p {...rise(2)} className="mt-5 max-w-xl text-lg text-ivory/85 leading-relaxed">
+          <motion.p {...rise(2)} className="mt-6 max-w-3xl text-lg sm:text-xl xl:text-2xl text-ivory/85 leading-relaxed font-sans">
             {messages.hero.description}
           </motion.p>
 
-          <motion.div {...rise(3)} className="mt-8 rounded-2xl border border-accent-500/30 bg-brand-950/40 p-5 backdrop-blur-xs">
-            <div className="mb-3 flex items-center justify-between font-ui text-sm">
-              <span className="text-lime-300 flex items-center gap-1.5 font-semibold">
-                <Calendar className="size-4" /> {hasEvent ? messages.hero.upcomingTitle : messages.hero.noUpcomingTitle}
+          <motion.div {...rise(3)} className="mt-10 rounded-3xl border border-accent-500/30 bg-brand-950/50 p-6 sm:p-8 backdrop-blur-xs shadow-xl">
+            <div className="mb-4 flex items-center justify-between font-ui text-base xl:text-lg">
+              <span className="text-lime-300 flex items-center gap-2 font-bold">
+                <Calendar className="size-5" /> {hasEvent ? messages.hero.upcomingTitle : messages.hero.noUpcomingTitle}
               </span>
-              <span className="text-ivory/80 flex items-center gap-1">
-                <MapPin className="size-3.5 text-accent-500" /> {messages.hero.locationDhaka}
+              <span className="text-ivory/85 flex items-center gap-1.5 font-medium">
+                <MapPin className="size-4 text-accent-500" /> {messages.hero.locationDhaka}
               </span>
             </div>
-            <p className="mb-4 font-ui text-lg sm:text-xl font-bold text-ivory">
+            <p className="mb-5 font-ui text-xl sm:text-2xl xl:text-3xl font-bold text-ivory">
               {title ?? messages.hero.noUpcomingTitle}
             </p>
             {hasEvent && startsAt ? (
               <Countdown to={startsAt} />
             ) : (
-              <p className="font-ui text-sm text-lime-300/90 py-2">
+              <p className="font-ui text-base text-lime-300/90 py-2">
                 {messages.hero.noUpcomingNotice}
               </p>
             )}
           </motion.div>
 
-          <motion.div {...rise(4)} className="mt-8 flex flex-wrap gap-4 items-center">
+          <motion.div {...rise(4)} className="mt-10 flex flex-wrap gap-4 sm:gap-5 items-center">
             {hasEvent && slug ? (
-              <Button
-                href={`/events/${slug}/apply`}
-                variant="accent"
-                className="w-full sm:w-auto shadow-lg shadow-accent-700/20"
-              >
-                {messages.hero.applyNow}
-              </Button>
+              <>
+                <Button
+                  href={`/events/${slug}/apply`}
+                  variant="accent"
+                  className="w-full sm:w-auto shadow-xl shadow-accent-700/30 text-base sm:text-lg px-8 py-3.5 font-bold hover:scale-[1.02] transition-transform"
+                >
+                  {messages.hero.applyNow}
+                </Button>
+                <Button
+                  href="/events"
+                  variant="ghost"
+                  className="w-full sm:w-auto text-base sm:text-lg px-8 py-3.5 font-bold hover:bg-white/10"
+                >
+                  {messages.hero.viewCalendar}
+                </Button>
+              </>
             ) : (
-              <Button
-                href="/events"
-                variant="accent"
-                className="w-full sm:w-auto shadow-lg shadow-accent-700/20"
-              >
-                {messages.hero.viewCalendar}
-              </Button>
+              <>
+                <Button
+                  href="/events"
+                  variant="accent"
+                  className="w-full sm:w-auto shadow-xl shadow-accent-700/30 text-base sm:text-lg px-8 py-3.5 font-bold hover:scale-[1.02] transition-transform"
+                >
+                  {messages.hero.viewCalendar}
+                </Button>
+                <Button
+                  href="/about"
+                  variant="ghost"
+                  className="w-full sm:w-auto text-base sm:text-lg px-8 py-3.5 font-bold hover:bg-white/10"
+                >
+                  {messages.nav.about}
+                </Button>
+              </>
             )}
-            <Button href="/events" variant="ghost" className="w-full sm:w-auto">
-              {messages.hero.viewCalendar}
-            </Button>
           </motion.div>
         </div>
 
         {/* Mihrab (pointed-arch) signature visual element */}
         <motion.div
           {...rise(2)}
-          className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-t-[999px] rounded-b-3xl border-2 border-accent-500/60 bg-linear-to-b from-brand-800 via-brand-900 to-brand-950 p-6 shadow-2xl shadow-brand-950/80 flex flex-col justify-between items-center text-center"
+          className="relative mx-auto aspect-[3/4] w-full max-w-md sm:max-w-lg xl:max-w-xl overflow-hidden rounded-t-[999px] rounded-b-3xl border-2 border-accent-500/70 bg-gradient-to-b from-brand-850 via-brand-900 to-brand-950 p-8 sm:p-10 shadow-2xl shadow-brand-950/90 flex flex-col justify-between items-center text-center ring-1 ring-accent-400/30"
           aria-hidden="true"
         >
-          {/* Subtle inner pointed arch guide */}
-          <div className="absolute inset-2.5 rounded-t-[999px] rounded-b-2xl border border-lime-500/20 pointer-events-none" />
+          {/* Subtle ambient lighting behind Mihrab */}
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(240,146,43,0.18),transparent_65%)]" />
+
+          {/* Double inner pointed arch guide */}
+          <div className="absolute inset-3 rounded-t-[999px] rounded-b-2xl border border-lime-400/25 pointer-events-none" />
+          <div className="absolute inset-5 rounded-t-[999px] rounded-b-xl border border-accent-500/20 pointer-events-none" />
 
           {/* Mihrab crest */}
-          <div className="pt-8">
-            <div className="size-16 mx-auto rounded-full bg-linear-to-br from-lime-500/20 to-brand-600/20 border border-lime-500/40 grid place-items-center">
-              <Sparkles className="size-8 text-lime-400" />
+          <div className="pt-10 z-10">
+            <div className="size-22 mx-auto rounded-3xl bg-brand-900/90 border-2 border-lime-400/40 p-3.5 shadow-xl shadow-brand-950/80 flex items-center justify-center ring-4 ring-lime-500/10 backdrop-blur-xs">
+              <Image
+                src="/as-sunnah-logo-light.svg"
+                alt="আস-সুন্নাহ ফাউন্ডেশন"
+                width={72}
+                height={48}
+                className="w-full h-auto object-contain drop-shadow-md"
+              />
             </div>
           </div>
 
           {/* Mihrab center content */}
-          <div className="z-10 py-6">
-            <p className="font-arabic text-2xl text-lime-300 drop-shadow-xs">{messages.hero.mihrab.bismillah}</p>
-            <h3 className="mt-4 font-display text-2xl font-bold text-ivory">{messages.hero.mihrab.title}</h3>
-            <p className="mt-2 font-ui text-sm text-ivory/70 max-w-xs">
+          <div className="z-10 py-6 sm:py-8 flex flex-col items-center">
+            <p className="font-arabic text-2xl sm:text-3xl xl:text-4xl text-amber-300 drop-shadow-[0_2px_12px_rgba(240,146,43,0.45)] font-bold leading-relaxed pb-3 sm:pb-4 select-none">
+              {messages.hero.mihrab.bismillah}
+            </p>
+            <h3 className="mt-4 sm:mt-6 font-display text-2xl sm:text-3xl xl:text-4xl font-extrabold text-ivory tracking-tight drop-shadow-sm leading-normal">
+              {messages.hero.mihrab.title}
+            </h3>
+            <p className="mt-3 font-ui text-base xl:text-lg text-ivory/85 max-w-sm leading-relaxed">
               {messages.hero.mihrab.subtitle}
             </p>
           </div>
 
           {/* Mihrab bottom badge */}
-          <div className="w-full pb-4">
-            <div className="rounded-xl border border-accent-500/40 bg-brand-950/80 py-2.5 px-4">
-              <span className="font-ui text-xs font-semibold text-accent-500 tracking-wide">
+          <div className="w-full pb-6 z-10">
+            <div className="rounded-2xl border border-accent-400/50 bg-brand-950/90 py-2.5 px-4 sm:px-6 inline-block max-w-full shadow-lg shadow-brand-950/60 backdrop-blur-xs">
+              <span className="font-ui text-xs sm:text-sm xl:text-base font-bold text-accent-400 tracking-wider whitespace-nowrap block truncate">
                 {messages.hero.mihrab.tag}
               </span>
             </div>

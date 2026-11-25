@@ -1,0 +1,75 @@
+/**
+ * As-Sunnah Foundation Official Font Faces
+ * Extracted & Reverse-Engineered from assunnahfoundation.org
+ *
+ * Primary Bengali: Bornomala (Regular 400, Bold 700)
+ * Primary English / Numbers: UbuntuSans (500-700 Variable)
+ * Secondary English / UI: PublicSans (400, 500, 600, 700)
+ */
+
+/* ==========================================================================
+   1. BORNOMALA (বাংলা মূল ফন্ট)
+   ========================================================================== */
+@font-face {
+  font-family: 'Bornomala';
+  src: url('/fonts/Bornomala-Regular.woff2') format('woff2'),
+       url('/fonts/Bornomala-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bornomala';
+  src: url('/fonts/Bornomala-Bold.woff2') format('woff2'),
+       url('/fonts/Bornomala-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   2. UBUNTU SANS (ইংরেজি ও সংখ্যার প্রাইমারি ফন্ট)
+   ========================================================================== */
+@font-face {
+  font-family: 'UbuntuSans';
+  src: url('/fonts/UbuntuSans.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   3. PUBLIC SANS (ইংরেজি ও সংখ্যার সেকেন্ডারি ফন্ট)
+   ========================================================================== */
+@font-face {
+  font-family: 'PublicSans';
+  src: url('/fonts/PublicSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PublicSans';
+  src: url('/fonts/PublicSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PublicSans';
+  src: url('/fonts/PublicSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PublicSans';
+  src: url('/fonts/PublicSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

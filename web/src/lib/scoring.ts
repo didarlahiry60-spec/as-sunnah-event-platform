@@ -6,8 +6,11 @@ export const DEFAULT_ACTIVITY_SCORES = {
   KHUTBAH: 5,
   CLEANUP: 20,
   TREE: 20,
+  TREE_PLANTING: 20,
   CLASS: 20,
+  ONLINE_CLASS: 20,
   HALAQA: 15,
+  SOCIAL_WORK: 10,
 } as const;
 
 export type ActivityCode = keyof typeof DEFAULT_ACTIVITY_SCORES;

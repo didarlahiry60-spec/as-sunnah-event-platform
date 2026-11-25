@@ -2,10 +2,10 @@ import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 const styles = {
-  primary: "bg-brand-800 text-ivory hover:bg-brand-600 focus-visible:outline-brand-600",
-  accent: "accent-foil-bg text-brand-950 font-bold hover:brightness-110 focus-visible:outline-accent-500",
-  ghost: "border border-ivory/60 text-ivory hover:bg-ivory/10 focus-visible:outline-ivory",
-  outline: "border-2 border-brand-800 text-brand-900 bg-transparent hover:bg-sand/60 focus-visible:outline-brand-800",
+  primary: "bg-brand-800 text-ivory border border-brand-700/60 hover:bg-brand-700 active:scale-[0.98] shadow-xs focus-visible:outline-brand-600",
+  accent: "bg-lime-500 text-brand-950 font-bold hover:bg-lime-400 active:scale-[0.98] shadow-xs shadow-brand-950/20 focus-visible:outline-lime-400",
+  ghost: "border border-ivory/25 text-ivory hover:bg-ivory/10 hover:border-ivory/40 active:scale-[0.98] focus-visible:outline-ivory",
+  outline: "border border-brand-800/30 text-brand-900 bg-transparent hover:bg-sand/60 active:scale-[0.98] focus-visible:outline-brand-800",
 } as const;
 
 type Variant = keyof typeof styles;
@@ -32,7 +32,7 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  const baseClasses = `inline-flex min-h-12 items-center justify-center rounded-full px-6 font-ui font-semibold transition-all duration-200 cursor-pointer ${styles[variant]} ${className}`;
+  const baseClasses = `inline-flex min-h-12 items-center justify-center rounded-xl px-5 font-ui font-semibold text-base transition-[background-color,border-color,color,transform] duration-150 ease-out cursor-pointer ${styles[variant]} ${className}`;
 
   if ("href" in props && typeof props.href === "string") {
     const { href, ...linkProps } = props as LinkButtonProps;
