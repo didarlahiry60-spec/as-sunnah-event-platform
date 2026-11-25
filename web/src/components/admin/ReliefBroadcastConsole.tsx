@@ -328,13 +328,13 @@ export function ReliefBroadcastConsole({ initialBroadcasts }: ReliefBroadcastCon
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left font-ui text-xs text-ink/90">
-                <thead className="bg-sand/30 text-ink/70 border-b border-sand/60">
+              <table className="w-full text-left font-ui text-sm text-ink/90">
+                <thead className="bg-sand/30 text-ink/80 text-sm font-bold border-b border-sand/60">
                   <tr>
-                    <th className="p-3.5">নাম ও প্রতিষ্ঠান</th>
-                    <th className="p-3.5">মোবাইল নম্বর</th>
-                    <th className="p-3.5">বর্তমান সাড়াদান</th>
-                    <th className="p-3.5 text-right">সরাসরি যোগাযোগ ও সাড়াদান</th>
+                    <th className="p-4">নাম ও প্রতিষ্ঠান</th>
+                    <th className="p-4">মোবাইল নম্বর</th>
+                    <th className="p-4">বর্তমান সাড়াদান</th>
+                    <th className="p-4 text-right">সরাসরি যোগাযোগ ও সাড়াদান</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-sand/60">
@@ -350,15 +350,15 @@ export function ReliefBroadcastConsole({ initialBroadcasts }: ReliefBroadcastCon
                       }`}
                     >
                       {/* Name */}
-                      <td className="p-3.5">
-                        <p className="font-bold text-ink text-sm">{resp.traineeName}</p>
-                        <p className="text-xs text-muted">
+                      <td className="p-4">
+                        <p className="font-bold text-ink text-base">{resp.traineeName}</p>
+                        <p className="text-sm text-muted">
                           {resp.mosqueName || `${resp.district} জেলা`} • {resp.category}
                         </p>
                       </td>
 
                       {/* Phone */}
-                      <td className="p-3.5 font-mono font-semibold text-brand-800">
+                      <td className="p-4 font-ui text-base font-bold tabular-nums tracking-wide text-brand-900">
                         {toBengaliDigits(resp.traineeMobile)}
                       </td>
 

@@ -244,7 +244,7 @@ export function TraineeDirectoryRating({ initialTrainees }: TraineeDirectoryRati
                 </div>
 
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted font-ui">
-                  <span className="font-mono text-brand-800 font-semibold">মোবাইল: {toBengaliDigits(trainee.mobile)}</span>
+                  <span className="font-ui text-sm sm:text-base text-brand-900 font-bold tabular-nums tracking-wide">মোবাইল: {toBengaliDigits(trainee.mobile)}</span>
                   <span>জেলা: {trainee.district || "বাংলাদেশ"}</span>
                   {trainee.mosqueName && <span>প্রতিষ্ঠান: {trainee.mosqueName}</span>}
                   <span className="text-amber-700 font-bold">

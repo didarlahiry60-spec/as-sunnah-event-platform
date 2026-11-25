@@ -384,7 +384,7 @@ export function AutomationDashboard() {
                   <p className="text-xs text-muted font-sans mt-0.5">
                     {trainee.mosqueName} • {trainee.district || "বাংলাদেশ"}
                   </p>
-                  <p className="text-xs text-brand-700 font-mono font-semibold mt-1.5">
+                  <p className="text-sm text-brand-900 font-ui font-bold tabular-nums tracking-wide mt-1.5">
                     {toBengaliDigits(trainee.mobile)}
                   </p>
                 </div>

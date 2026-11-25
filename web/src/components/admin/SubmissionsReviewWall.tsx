@@ -379,7 +379,7 @@ export function SubmissionsReviewWall() {
                         <div className="flex items-center gap-2 text-xs text-muted font-ui">
                           <span className="inline-flex items-center gap-1">
                             <Phone className="size-3 text-brand-700" />
-                            <span className="font-mono">{formatBengaliNumber(sub.traineeMobile)}</span>
+                            <span className="font-ui text-sm font-bold tabular-nums tracking-wide text-brand-900">{formatBengaliNumber(sub.traineeMobile)}</span>
                           </span>
                           <span className="size-1 rounded-full bg-sand" />
                           <span className="inline-flex items-center gap-1">
