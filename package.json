@@ -9,6 +9,7 @@
     "lint": "pnpm --filter web lint",
     "test": "pnpm --filter web test",
     "typecheck": "pnpm --filter web exec tsc --noEmit",
+    "deploy": "./scripts/deploy.sh",
     "db:generate": "pnpm --filter web exec prisma generate",
     "db:seed": "pnpm --filter web run db:seed"
   }
