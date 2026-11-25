@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Mail, Clock, Headphones, ExternalLink } from "lucide-react";
+import { MapPin, Phone, Mail, Headphones, ExternalLink } from "lucide-react";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { messages } from "@/lib/messages";
 import { getServerMessages } from "@/lib/i18n-server";
@@ -77,7 +77,7 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-display text-2xl font-bold text-ink">
-                    {messages.contactPage.officeHeading}
+                    {t.contactPage.officeHeading}
                   </h3>
                   <p className="mt-3 text-base xl:text-lg leading-relaxed text-ink/85 font-sans">
                     {CONTACT_INFO.address}
@@ -106,7 +106,7 @@ export default async function ContactPage() {
                 </div>
                 <div className="space-y-4 flex-1">
                   <h3 className="font-display text-2xl font-bold text-ink">
-                    {messages.contactPage.hotlineHeading}
+                    {t.contactPage.hotlineHeading}
                   </h3>
                   <div className="space-y-3">
                     {CONTACT_INFO.phoneNumbers.map(ph => (
@@ -145,28 +145,6 @@ export default async function ContactPage() {
                         >
                           {em.address}
                         </a>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Office Hours */}
-            <div className="rounded-3xl border border-sand bg-brand-950 p-8 xl:p-10 text-ivory shadow-soft">
-              <div className="flex items-start gap-4">
-                <div className="grid size-14 place-items-center rounded-2xl bg-brand-900 text-lime-400 shrink-0 border border-lime-500/30">
-                  <Clock className="size-7" />
-                </div>
-                <div className="space-y-3 flex-1">
-                  <h3 className="font-display text-2xl font-bold text-ivory">
-                    {messages.contactPage.hoursHeading}
-                  </h3>
-                  <div className="space-y-2.5 font-ui text-sm sm:text-base text-ivory/80">
-                    {CONTACT_INFO.officeHours.map(h => (
-                      <div key={h.days} className="flex items-center justify-between border-b border-brand-800/80 pb-2">
-                        <span>{h.days}</span>
-                        <span className="font-bold text-lime-400">{h.time}</span>
                       </div>
                     ))}
                   </div>
